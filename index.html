@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ANT</title>
+    <script src="https://kit.fontawesome.com/43298923f3.js"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <!-- <link rel="stylesheet" href="assets/css/fonts_css.css"> -->
+</head>
+
+<body>
+    <!-- Section 1 = Section de titre -->
+    <section id="section1">
+        <div class="container1"> 
+            <h1>ATTENTION NETWORK TASK</h1>
+            <h2>(Jin Fan et al 2002)</h2>
+            <h3>Thibault CACI - 2021</h3>
+        </div>
+    </section>
+
+    <!-- Section 2 = Section de choix examinateur -->
+    <section id="section2">
+        <h1>Selectionnez un examinateur</h1>
+        <div class="dropdown">
+            <button class="dropbtn">Nom :</button>
+            <div class="dropdown-content">
+              <a href="#">Nom Exam 1</a>
+              <a href="#">Nom Exam 2</a>
+              <a href="#">Nom Exam 3</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Prénom :</button>
+            <div class="dropdown-content">
+              <a href="#">Prénom Exam 1</a>
+              <a href="#">Prénom Exam 2</a>
+              <a href="#">Prénom Exam 3</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <button class="dropbtn">Site :</button>
+            <div class="dropdown-content">
+              <a href="#">Site 1</a>
+              <a href="#">Site 2</a>
+              <a href="#">Site 3</a>
+            </div>
+        </div>
+        <p>Date : <script>document.write(new Date().toLocaleDateString()); </script></p>
+    </section>
+
+    <!-- Section 2 = Section de création patient -->
+    <section id="section3">
+        <h1>Créer un patient</h1>
+        <div id="NomPatient">
+            <label for="name">Nom (3 premières lettres):</label>
+            <input type="text" id="name" name="name" required minlength="1" maxlength="3" size="10">
+        </div>
+        <div id="PrenomPatient">
+            <label for="name">Prénom (3 premières lettres):</label>
+            <input type="text" id="name" name="name" required minlength="1" maxlength="3" size="10">
+        </div>
+        <div id="DnPatient">
+            <label for="birth">Date de naissance :</label>
+            <input type="date" id="birth" name="trip-birth" value="2000-01-01" min="2000-01-01" max="2020-12-31">
+        </div>
+        <p>Date : <script>document.write(new Date().toLocaleDateString()); </script></p>
+    </section>
+
+    <section id="section3">
+        <button type="button">Go</button>
+    </section>
+
+</body>
+
+<footer></footer>
+
+</html>
