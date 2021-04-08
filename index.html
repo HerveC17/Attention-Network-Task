@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ANT</title>
     <script src="assets/js/scripts.js"></script>
-    <script src="https://kit.fontawesome.com/43298923f3.js"></script>
+    <script src="https://kit.fontawesome.com/43298923f3.js"></script> <!-- Polices -->
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
     <!-- <link rel="stylesheet" href="assets/css/fonts_css.css"> -->
@@ -28,7 +28,7 @@
     <section id="section2">
         <div class="split left">
             <div class="examinateur">
-                <h1>Sélection de l'examinateur</h1>
+                <h1>Examinateur</h1>
                 <form method="POST" action="">
                     <p>
                         <label for="examinateur">Examinateur:</label>
@@ -52,18 +52,18 @@
         </div>
         <div class="split right">
             <div class="patient">
-                <h1>Création d'un patient</h1>
+                <h1>Patient</h1>
                 <form method="POST" action="">
                     <p>
                         <label for="name">Nom :</label>
                         <input type="text" id="lName" name="lName" required minlength="1" maxlength="3" size="10">
                     
                         <label for="name">Prénom :</label>
-                        <input type="text" id="fName" name="fName" required minlength="1" maxlength="3" size="10">
+                        <input type="text" id="fName" name="fName" required minlength="1" maxlength="2" size="10">
                     
-                        <label for="genre">Genre :</label>
-                        <select name="genre" id="genre">
-                            <option value="">--Choisissez un genre--</option>
+                        <label for="sexe">Sexe :</label>
+                        <select name="sexe" id="sexe">
+                            <option value="">--Choisissez un sexe--</option>
                             <option value="Homme">Homme</option>
                             <option value="Femme">Femme</option>
                         </select>

@@ -510,7 +510,7 @@ var jsPsych = (function() {
       if (keyboardNotAllowed) {
         go();
       } else {
-        DOM_target.append('<div class = jspsych-instructions-nav><p>The experiment will launch in fullscreen mode when you click the button below.</p><button id="jspsych-fullscreen-btn" class="jspsych-btn">Launch Experiment</button></div>');
+        DOM_target.append('<div class = jspsych-instructions-nav><p>Le test se lancera en mode plein écran lorsque vous cliquerez sur le bouton ci-dessous</p><button id="jspsych-fullscreen-btn" class="jspsych-btn">Lancer le test</button></div>');
         $('#jspsych-fullscreen-btn').on('click', function() {
           var element = document.documentElement;
           if (element.requestFullscreen) {

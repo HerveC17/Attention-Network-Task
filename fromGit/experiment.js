@@ -220,8 +220,8 @@ var post_task_block = {
    data: {
        trial_id: "post task questions"
    },
-   questions: ['<p class = center-block-text style = "font-size: 20px">Please summarize what you were asked to do in this task.</p>',
-              '<p class = center-block-text style = "font-size: 20px">Do you have any comments about this task?</p>'],
+   questions: ['<p class = center-block-text style = "font-size: 20px">Veuillez résumer ce que l\'on vous a demandé de faire dans cette tâche.</p>',
+              '<p class = center-block-text style = "font-size: 20px">Avez-vous des commentaires sur cette tâche?</p>'],
    rows: [15, 15],
    columns: [60,60]
 };
@@ -229,7 +229,7 @@ var post_task_block = {
 /* define static blocks */
 var test_intro_block = {
 	type: 'poldrack-text',
-	text: '<div class = centerbox><p class = center-block-text>We will now start the test. Press <strong>enter</strong> to begin.</p></div>',
+	text: '<div class = centerbox><p class = center-block-text>Le test va maintenant commencer. Appuyez sur la touche <strong>entrée</strong> pour commencer.</p></div>',
 	cont_key: [13],
 	data: {
 		trial_id: "intro",
@@ -244,7 +244,7 @@ var test_intro_block = {
 
 var end_block = {
 	type: 'poldrack-text',
-	text: '<div class = centerbox><p class = center-block-text>Thanks for completing this task!</p><p class = center-block-text>Press <strong>enter</strong> to continue.</p></div>',
+	text: '<div class = centerbox><p class = center-block-text>Merci d\'avoir terminé cette tâche !</p><p class = center-block-text>Appuyez sur la touche <strong>enter</strong> pour continuer.</p></div>',
 	cont_key: [13],
 	data: {
 		trial_id: "end",
@@ -256,7 +256,7 @@ var end_block = {
 };
 
 var feedback_instruct_text =
-	'Welcome to the experiment. This experiment will take about 15 minutes. Press <strong>enter</strong> to begin.'
+	'Bienvenue sur le test. Le test va durer environ 15 minutes. Appuyez sur la touche <strong>entrée</strong> pour commencer.'
 var feedback_instruct_block = {
 	type: 'poldrack-text',
 	cont_key: [13],
@@ -271,8 +271,8 @@ var feedback_instruct_block = {
 var instructions_block = {
 	type: 'poldrack-instructions',
 	pages: [
-		'<div class = centerbox><p class = block-text>In this experiment you will see groups of five arrows and dashes pointing left or right (e.g &larr; &larr; &larr; &larr; &larr;, or &mdash; &mdash; &rarr; &mdash; &mdash;) presented randomly at the top or bottom of the screen.</p><p class = block-text>Your job is to indicate which way the central arrow is pointing by pressing the corresponding arrow key.</p></p></p></div>',
-		'<div class = centerbox><p class = block-text>Before the arrows and dashes come up, an * will occasionally come up somewhere on the screen.</p><p class = block-text>Irrespective of whether or where the * appears, it is important that you respond as quickly and accurately as possible by pressing the arrow key corresponding to the direction of the center arrow.</p><p class = block-text>After you end instructions we will start with practice. During practice you will receive feedback about whether your responses are correct. You will not receive feedback during the rest of the experiment.</p></div>'
+		'<div class = centerbox><p class = block-text>Dans ce test, vous verrez des groupes de cinq flèches et tirets pointant vers la gauche ou la droite (par exemple : &larr; &larr; &larr; &larr; &larr;, ou &mdash; &mdash; &rarr; &mdash; &mdash;) presentés au hasard en haut ou en bas de l\'écran.</p><p class = block-text>Votre travail consiste à indiquer dans quelle direction pointe la flèche du milieu, en appuyant sur la touche fléchée correspondante.</p></p></p></div>',
+		'<div class = centerbox><p class = block-text>Parfois, avant que les flèches et les tirets n\'apparaissent, un * apparaîtra aléatoirement sur l\'écran.</p><p class = block-text>Indépendamment du fait que * apparaîsse ou non, il est important que vous répondiez aussi rapidement et précisément que possible en appuyant sur la touche fléchée correspondant à la direction de la flèche centrale.</p><p class = block-text>Après avoir terminé les instructions, nous commencerons par un entrainement. Pendant cet entraînement, vous recevrez des commentaires pour savoir si vos réponses sont correctes. Vous ne recevrez pas de commentaire pendant la suite du test.</p></div>'
 	],
 	allow_keys: false,
 	data: {
@@ -294,10 +294,10 @@ var instruction_node = {
 		}
 		if (sumInstructTime <= instructTimeThresh * 1000) {
 			feedback_instruct_text =
-				'Read through instructions too quickly.  Please take your time and make sure you understand the instructions.  Press <strong>enter</strong> to continue.'
+				'Vous avez lu les consignes trop rapidement. Veuillez prendre votre temps et assurez-vous de bien comprendre les consignes. Appuyez sur la touche <strong>enter</strong> pour continuer.'
 			return true
 		} else if (sumInstructTime > instructTimeThresh * 1000) {
-			feedback_instruct_text = 'Done with instructions. Press <strong>enter</strong> to continue.'
+			feedback_instruct_text = 'Vous en avez terminé avec les consignes. Appuyez sur la touche <strong>enter</strong> pour continuer.'
 			return false
 		}
 	}
@@ -305,7 +305,7 @@ var instruction_node = {
 
 var rest_block = {
 	type: 'poldrack-text',
-	text: '<div class = centerbox><p class = block-text>Take a break! Press any key to continue.</p></div>',
+	text: '<div class = centerbox><p class = block-text>Prenez une pause ! Appuyez sur une touche pour reprendre.</p></div>',
 	timing_response: 180000,
 	data: {
 		trial_id: "rest block"
@@ -445,9 +445,9 @@ for (i = 0; i < block.data.length; i++) {
 		stimulus: block.stimulus[i],
 		is_html: true,
 		key_answer: block.data[i].correct_response,
-		correct_text: '<div class = centerbox><div style="color:green"; class = center-text>Correct!</div></div>',
+		correct_text: '<div class = centerbox><div style="color:green"; class = center-text>Correct !</div></div>',
 		incorrect_text: '<div class = centerbox><div style="color:red"; class = center-text>Incorrect</div></div>',
-		timeout_message: '<div class = centerbox><div class = center-text>Respond faster!</div></div>',
+		timeout_message: '<div class = centerbox><div class = center-text>Répondez plus vite !</div></div>',
 		choices: choices,
 		data: block.data[i],
 		timing_response: 1700,
