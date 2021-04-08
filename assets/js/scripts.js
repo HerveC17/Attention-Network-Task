@@ -16,7 +16,7 @@ let saveFile = () => {
     const site = document.getElementById('site');
     const lName = document.getElementById('lName');
     const fName = document.getElementById('fName');
-    const genre = document.getElementById('genre');
+    const sexe = document.getElementById('sexe');
     const birth = document.getElementById('birth');
     const age = document.getElementById('Age');
 
@@ -25,7 +25,7 @@ let saveFile = () => {
         'Site: ' + site.value + ' \r\n ' +
         'lName: ' + lName.value + ' \r\n ' +
         'fName: ' + fName.value + ' \r\n ' +
-        'genre: ' + genre.value + ' \r\n ' +
+        'sexe: ' + sexe.value + ' \r\n ' +
         'birth: ' + birth.value + ' \r\n ' +
         'age: ' + age.value;
 
