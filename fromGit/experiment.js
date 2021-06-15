@@ -2,6 +2,11 @@
 /* Define helper functions */
 /* ************************************ */
 
+function getVersion() {
+	var version = jsPsych.version();
+	console.log(version);
+}
+
 function evalAttentionChecks() {
 	var check_percent = 1
 	if (run_attention_checks) {
@@ -100,17 +105,19 @@ var credit_var = true
 var locations = ['up', 'down']
 var cues = ['nocue', 'center', 'double', 'spatial']
 var current_trial = 0
-var exp_stage = 'practice'
+var exp_stage = 'practice' // Variable dans excel
 var test_stimuli = []
 var choices = [37, 39]
 var path = 'images/'
 var images = [path + 'right_arrow.png', path + 'left_arrow.png', path + 'no_arrow.png']
+var images_fish = [path + 'right_fish.png', path + 'left_fish.png', path + 'no_fish.png']
+
 //preload
 jsPsych.pluginAPI.preloadImages(images)
 
-for (l = 0; l < locations.length; l++) {
+for (l = 0; l < locations.length; l++) { 
 	var loc = locations[l]
-	for (ci = 0; ci < cues.length; ci++) {
+	for (ci = 0; ci < 1; ci++) { // cues.length
 		var c = cues[ci]
 		stims = [{
 			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
@@ -186,14 +193,18 @@ for (l = 0; l < locations.length; l++) {
 }
 
 /* set up 24 practice trials. Included all nocue up trials, center cue up trials, double cue down trials, and 6 spatial trials (3 up, 3 down) */
-var practice_block = jsPsych.randomization.repeat(test_stimuli.slice(0, 12).concat(test_stimuli.slice(
-	18, 21)).concat(test_stimuli.slice(36, 45)), 1, true);
+var practice_block = jsPsych.randomization.repeat(test_stimuli.slice(0, 3), 1, true);
+
+/* var practice_block = jsPsych.randomization.repeat(test_stimuli.slice(0, 12).concat(test_stimuli.slice(
+	18, 21)).concat(test_stimuli.slice(36, 45)), 1, true); */
+	
 
 /* set up repeats for three test blocks */
 var block1_trials = jsPsych.randomization.repeat($.extend(true, [], test_stimuli), 1, true);
 var block2_trials = jsPsych.randomization.repeat($.extend(true, [], test_stimuli), 1, true);
 var block3_trials = jsPsych.randomization.repeat($.extend(true, [], test_stimuli), 1, true);
-var blocks = [block1_trials, block2_trials, block3_trials]
+//var blocks = [block1_trials, block2_trials, block3_trials]
+var blocks = [block1_trials] // Pour n'avoir que 1 bloc de 24 essais
 
 
 /* ************************************ */
@@ -488,11 +499,11 @@ attention_network_task_experiment.push(test_intro_block);
 
 /* Set up ANT main task */
 var trial_num = 0
-for (b = 0; b < blocks.length; b++) {
-	var block = blocks[b]
-	for (i = 0; i < block.data.length; i++) {
+for (b = 0; b < blocks.length; b++) { // Pour chaque bloc de 48 essais
+	var block = blocks[b] 			  // block1_trials, block2_trials, block3_trials
+	for (i = 0; i < block.data.length; i++) { // Pour chaque essai dans le bloc
 		var trial_num = trial_num + 1
-		var first_fixation_gap = Math.floor(Math.random() * 1200) + 400;
+		var first_fixation_gap = Math.floor(Math.random() * 1200) + 400; // Temps D1 aléatoire 400 =< D1 =< 1600
 		var first_fixation = {
 			type: 'poldrack-single-stim',
 			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div>',
@@ -573,7 +584,12 @@ for (b = 0; b < blocks.length; b++) {
 		attention_network_task_experiment.push(last_fixation)
 	}
 	attention_network_task_experiment.push(attention_node)
-	attention_network_task_experiment.push(rest_block)
+	attention_network_task_experiment.push(rest_block) // Fin du bloc de test
 }
-attention_network_task_experiment.push(post_task_block)
-attention_network_task_experiment.push(end_block)
+
+//
+//
+attention_network_task_experiment.push(post_task_block) // Questionnaire
+attention_network_task_experiment.push(end_block) // Fin de l'expérience
+
+

@@ -26,50 +26,57 @@
 <script src='experiment.js'></script>
 
 <script>
-$( document ).ready(function() {
+    $(document).ready(function () {
 
-    jsPsych.init({
-             timeline: attention_network_task_experiment,
-             display_element: "getDisplayElement",
-             fullscreen: true,
-             on_trial_finish: function(data){
-               addID('attention-network-task')
-             },
+        jsPsych.init({
+            timeline: attention_network_task_experiment,
+            display_element: "getDisplayElement",
+            fullscreen: true,
+            on_trial_finish: function (data) {
+                addID('attention-network-task')
+            },
 
-             on_finish: function(data){
+            on_finish: function (data) {
 
-                 // Serialize the data
-                 var promise = new Promise(function(resolve, reject) {
-                     var data = jsPsych.data.dataAsJSON();
-                     resolve(data);
-                 })
+                // Serialize the data
+                var promise = new Promise(function (resolve, reject) {
+                    var data = jsPsych.data.dataAsJSON();
+                    resolve(data);
+                })
 
-                 promise.then(function(data) {
+                promise.then(function (data) {
 
 
-                     $.ajax({
-                         type: "POST",
-                         url: '/save',
-                         data: { "data": data },
-                         success: function(){ document.location = "/next" },
-                         dataType: "application/json",
+                    $.ajax({
+                        type: "POST",
+                        url: '/save',
+                        data: { "data": data },
+                        success: function () { document.location = "/next" },
+                        dataType: "application/json",
 
-                         // Endpoint not running, local save
-                         error: function(err) {
+                        // Endpoint not running, local save
+                        error: function (err) {
 
-                             if (err.status == 200){
-                                 document.location = "/next";
-                             } else {
-                                 // If error, assue local save
-                                 jsPsych.data.localSave('attention-network-task_results.csv', 'csv');
-                             }
-                         }
-                     });
-                 })
-             }
+                            if (err.status == 200) {
+                                document.location = "/next";
+                            } else {
+                                // If error, assue local save
+                                jsPsych.data.localSave('attention-network-task_results.csv', 'csv');
+                            }
+                        }
+                    });
+                })
+                console.log("debug");
+                var myData = jsPsych.data.get().filter({trial_type: 'poldrack-single-stim'}).filterCustom(function(x){return x.trial_num > 0});
+                //var myData = jsPsych.data.getData().filter({trial_type: 'poldrack-single-stim'}).filterCustom(function(x){return x.trial_num > 0});
+                var myCorrects = myData.filter({ correct: true }).count()
+                console.log("correct answers : ", myCorrects)
+                var myWrongs = myData.filter({ correct: false }).count()
+                console.log("wrong answers : ", myWrongs)
+            }
 
-      });
-});
+        }); // fin de jsPsych.int()
+    });
 </script>
 </body>
 </html>
