@@ -12,49 +12,6 @@ jsPsych.plugins["single-stim-button"] = (function() {
 
   var plugin = {};
 
-  plugin.info = {
-	  name: 'single-stim-button',
-	  description: '',
-	  parameters: {
-		  button_class: {
-			type: jsPsych.plugins.parameterType.KEY, // DOUTE
-			pretty_name: 'Button class',
-			default: null,
-			description: 'Button class'
-		  },
-		  response_ends_trial: {
-			type: jsPsych.plugins.parameterType.INT,
-			pretty_name: 'Response ends trial',
-			default: null,
-			description: 'Response ends trial' 
-		  },
-		  timing_stim: {
-			type: jsPsych.plugins.parameterType.INT,
-			pretty_name: 'Timing stim',
-			default: -1,
-			description: 'Timing stim'
-		  },
-		  timing_response: {
-			type: jsPsych.plugins.parameterType.INT,
-			pretty_name: 'Timing_response',
-			default: -1,
-			description: 'Timing_response'
-		  },
-		  timing_post_trial: {
-			type: jsPsych.plugins.parameterType.INT,
-			pretty_name: 'Timing post trial',
-			default: null,
-			description: 'Timing post trial'
-		  },
-		  prompt: {
-			type: jsPsych.plugins.parameterType.STRING,
-			pretty_name: 'Prompt',
-			default: "",
-			description: 'Prompt'
-		  }
-	  }
-  }
-
   jsPsych.pluginAPI.registerPreload('single-stim-button', 'stimulus', 'image')
 
   plugin.trial = function(display_element, trial) {

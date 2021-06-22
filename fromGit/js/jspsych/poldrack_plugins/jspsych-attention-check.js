@@ -27,7 +27,7 @@
     // if any trial variables are functions
     // this evaluates the function and replaces
     // it with the output of the function
-    trial = jsPsych.pluginAPI.evaluateFunctionParameters(trial);
+    //trial = jsPsych.pluginAPI.evaluateFunctionParameters(trial);
 
     // set default values for the parameters
     var default_question = questions.pop()
@@ -117,7 +117,7 @@
       //jsPsych.data.write(trial_data);
 
       // clear the display
-      display_element.html('');
+      display_element.innerHTML = '';
 
       // move on to the next trial
       jsPsych.finishTrial(trial_data);
@@ -145,7 +145,7 @@
     	var keyboardListener = jsPsych.pluginAPI.getKeyboardResponse({
     		callback_function: after_response,
     		valid_responses: trial.choices,
-    		rt_method: 'date',
+    		rt_method: 'performance', // 'date'
     		persist: false,
     		allow_held_key: false
     	});
