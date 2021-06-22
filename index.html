@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ANT</title>
     <script src="assets/js/scripts.js"></script>
-    <script src="https://kit.fontawesome.com/43298923f3.js"></script> <!-- Polices -->
+    <script type="text/javascript" src="../Attention-Network-Task/assets/js/examinateur.json"></script>
+    <script type="text/javascript" src="../Attention-Network-Task/assets/js/site.json"></script>
+    <script src="https://kit.fontawesome.com/43298923f3.js"></script> 
+    
+    <!-- Polices -->
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
     <!-- <link rel="stylesheet" href="assets/css/fonts_css.css"> -->
@@ -34,17 +38,10 @@
                         <label for="examinateur">Examinateur:</label>
                         <select name="examinateur" id="examinateur">
                             <option value="">--Choisissez un examinateur--</option>
-                            <option value="examinateur1">Examinateur 1</option>
-                            <option value="examinateur2">Examinateur 2</option>
-                            <option value="examinateur3">Examinateur 3</option>
                         </select>
-
                         <label for="site">Site:</label>
                         <select name="site" id="site">
                             <option value="">--Choisissez un site--</option>
-                            <option value="site1">Site 1</option>
-                            <option value="site2">Site 2</option>
-                            <option value="site3">Site 3</option>
                         </select>
                     </p>
                 </form>
@@ -89,6 +86,7 @@
 
 </body>
 
+<script>getExaminateur(); getSite();</script>
 <footer></footer>
 
 </html>

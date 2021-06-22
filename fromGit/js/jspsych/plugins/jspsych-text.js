@@ -20,14 +20,14 @@ jsPsych.plugins.text = (function() {
     // if any trial variables are functions
     // this evaluates the function and replaces
     // it with the output of the function
-    trial = jsPsych.pluginAPI.evaluateFunctionParameters(trial);
+    //trial = jsPsych.pluginAPI.evaluateFunctionParameters(trial);
 
     // set the HTML of the display target to replaced_text.
-    display_element.html(trial.text);
+    display_element.innerHTML = trial.text;
 
     var after_response = function(info) {
 
-      display_element.html(''); // clear the display
+      display_element.innerHTML = ''; // clear the display
 
       var trialdata = {
         "rt": info.rt,
@@ -40,7 +40,7 @@ jsPsych.plugins.text = (function() {
 
     var mouse_listener = function(e) {
 
-      var rt = (new Date()).getTime() - start_time;
+      var rt = performance.now() - start_time;
 
       display_element.unbind('click', mouse_listener);
 
@@ -54,12 +54,12 @@ jsPsych.plugins.text = (function() {
     // check if key is 'mouse'
     if (trial.cont_key == 'mouse') {
       display_element.click(mouse_listener);
-      var start_time = (new Date()).getTime();
+      var start_time = performance.now();
     } else {
       jsPsych.pluginAPI.getKeyboardResponse({
         callback_function: after_response,
         valid_responses: trial.cont_key,
-        rt_method: 'date',
+        rt_method: 'performance',
         persist: false,
         allow_held_key: false
       });
