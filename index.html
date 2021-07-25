@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="UTF-8">
@@ -21,7 +21,7 @@
     <section id="section1">
         <div class="container"> 
             <h1>ATTENTION NETWORK TASK</h1>
-            <h2>(Jin Fan et al 2002)</h2>
+            <h2>(Jin FAN et al 2002)</h2>
             <h3>Thibault CACI - 2021</h3>
         </div>
         <br/>
@@ -59,15 +59,13 @@
                         <input type="text" id="fName" name="fName" required minlength="1" maxlength="2" size="10">
                     
                         <label for="sexe">Sexe :</label>
-                        <select name="sexe" id="sexe">
-                            <option value="">--Choisissez un sexe--</option>
-                            <option value="Homme">Homme</option>
-                            <option value="Femme">Femme</option>
-                        </select>
-                    
+                        <form>
+                            <input type="radio" name="gender" value="Homme">Masculin
+                            <input type="radio" name="gender" value="Femme">Feminin
+                        </form>
                         <label for="birth">Date de naissance :</label>
-                        <input type="date" id="birth" name="birth" value="2000-01-01" min="2000-01-01" max="2020-12-31"
-                            Onblur="fnCalculateAge()">
+                        <input type="date" id="birth" name="birth" value="2000-01-01" min="1930-01-01" max="2015-12-31"
+                                    Onblur="calculateAge()">
                     </p>
                 </form>
             </div>
@@ -75,18 +73,24 @@
     </section>
 
     <section id="section3">
-        <label>Le patient est agé de : </label><input type="text" name="age" id="Age" size="10" disabled>
+        <label>Le patient est agé de : </label><input type="text" name="age" id="Age" size="25" disabled>
         <br/><br/>
         <div>
-            <input type="button" id="bt" value="Save data to file" onclick="saveFile()" />
+            <input type="button" id="buttonSave" value="Save data to file" onclick="saveFile()" />
         </div>
         <br/><br/>
-        <a class="button" href="fromGit/index.html">Go</a>
+        <div>
+            <input type="button" id="buttonGO" value="GO" disabled href="fromGit/index.html">
+        </div>
     </section>
 
 </body>
 
-<script>getExaminateur(); getSite();</script>
+<script>
+    getExaminateur();
+    getSite();
+</script>
+
 <footer></footer>
 
 </html>

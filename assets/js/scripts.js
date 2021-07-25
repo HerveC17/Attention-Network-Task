@@ -3,45 +3,102 @@ script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
 script.type = 'text/javascript';
 document.getElementsByTagName('head')[0].appendChild(script);
 
-var calculatedAge;
+let ageOfPatient;
+let isChildVersion=false;
 
-function fnCalculateAge() {
-    var userDateinput = document.getElementById("birth").value;
-    console.log(userDateinput);
-    // convert user input value into date object
-    var birthDate = new Date(userDateinput);
-    console.log(" birthDate" + birthDate);
-    // get difference from current date;
-    var difference = Date.now() - birthDate.getTime();
-    var ageDate = new Date(difference);
-    calculatedAge = Math.abs(ageDate.getUTCFullYear() - 1970);
-    document.getElementById('Age').value = calculatedAge + " ans";
+/* ******************************* **/
+/*                                  */
+/*    Calculate patient's age and   */
+/*    copies it to HTML page        */
+/*                                  */
+/*    Hervé CACI: July 22nd, 2021   */
+/*                                  */
+/* ******************************* **/
+
+function calculateAge() {
+    // convert user input value into date object and get the
+    // difference from current date
+    //
+    let dobDate = new Date(document.getElementById("birth").value);
+    let nowDate = new Date(new Date().setHours(0, 0, 0, 0));
+    let years = nowDate.getFullYear() - dobDate.getFullYear();
+    let months = nowDate.getMonth() - dobDate.getMonth();
+    let days = nowDate.getDate() - dobDate.getDate();
+    //
+    // Work out the difference in months and add those month to the DOB,
+    // calculate the difference in milliseconds and convert it in days
+    months += years * 12;
+    if (days < 0) { months -= 1; }
+    dobDate.setMonth(dobDate.getMonth() + months);
+    days = Math.round((nowDate - dobDate) / 86400 / 1000);
+    //
+    // Now convert months back to years and months, and format the output
+    //
+    years = parseInt(months / 12);
+    months -= (years * 12);
+    let text = "";
+    if (years) { text = years + (years > 1 ? " ans" : " an"); }
+    if (months) {
+      if (text.length) { text = text + ", "; }
+      text = text + months + (months > 1 ? " mois" : " mois")
+    }
+    if (days) {
+      if (text.length) { text = text + ", "; }
+      text = text + days + (days > 1 ? " jours" : " jour")
+    }
+    //
+    ageOfPatient=text;
+    if (years>=11) { isChildVersion=false; }
+        else { isChildVersion=true; }
+    document.getElementById('Age').value = text;
 }
 
 // Test de la sauvegarde des data
-let saveFile = () => {
+
+function saveFile() { // saveFile = () => {
     const examinateur = document.getElementById('examinateur');
     const site = document.getElementById('site');
-    const lName = document.getElementById('lName');
-    const fName = document.getElementById('fName');
-    const sexe = document.getElementById('sexe');
+    const lastName = document.getElementById('lName');
+    const firstName = document.getElementById('fName');
     const birth = document.getElementById('birth');
     const age = document.getElementById('Age');
+    
+    let sexeRadio = document.getElementsByName('gender');
+    let sexe="Non renseigne";
+    if (sexeRadio[0].checked) { sexe="Masculin"; }
+        else if (sexeRadio[1].checked) { sexe="Feminin"; }
+
+    let todayDate=new Date();
 
     let data = 
         '\r Examinateur: ' + examinateur.value + ' \r\n ' +
         'Site: ' + site.value + ' \r\n ' +
-        'lName: ' + lName.value + ' \r\n ' +
-        'fName: ' + fName.value + ' \r\n ' +
-        'sexe: ' + sexe.value + ' \r\n ' +
-        'birth: ' + birth.value + ' \r\n ' +
-        'age: ' + age.value;
+        'lName: ' + lastName.value + ' \r\n ' +
+        'fName: ' + firstName.value + ' \r\n ' +
+        'sexe: ' + sexe + ' \r\n ' +
+        'Date de passation: ' + todayDate.toLocaleDateString() + ' \r\n ' +
+        'Date de naissance: ' + birth.value + ' \r\n ' +
+        'age: ' + age.value + ' \r\n ' +
+        'Child version: ' + isChildVersion + ' \r\n'
 
+    // File name reflects patient characteristics:
+    //    LastName (3 chars) + firstName (2 chars) + passationDate (8 chars)
+    //    + passationTime (4 chars) + version (A=Adult / c=child) + sex (M/F)
+    // 
+    let todayMonth=(todayDate.getMonth()+1).toString();
+    if (todayDate.getMonth()<9) { todayMonth='0'+todayMonth; }
+    let fileName = lastName.value.toUpperCase() + firstName.value.toUpperCase() /*
+    */ + '_' + todayDate.getFullYear() + todayMonth + todayDate.getDate() /*
+    */ + '_' + todayDate.getHours() + todayDate.getMinutes()
+    if (isChildVersion) { fileName = fileName + "_c"; }
+        else { fileName = fileName + "_A"; }
+    if (sexe=="Masculin") { fileName = fileName + "M"; }
+        else { fileName = fileName + "F"; }
+    fileName = fileName + '.txt'
+    
     const textToBLOB = new Blob([data], {type : 'text/plain' });
-    const sFileName = 'formData.txt';
-
     let newLink = document.createElement("a");
-    newLink.download = sFileName;
+    newLink.download = fileName;
 
     if (window.webkitURL != null) {
         newLink.href = window.webkitURL.createObjectURL(textToBLOB);

@@ -22,8 +22,16 @@ function evalAttentionChecks() {
 	return check_percent
 }
 
-// Modified by Thibault CACI on june 2021 (for JsPsych 6.3.0)
-//
+/* ********************************************* */
+/*                                               */
+/*   Compute all parameters assessing the three  */
+/*   attention network.                          */
+/*                                               */
+/*   Modified by Thibault CACI on june 2021      */
+/*   (for JsPsych 6.3.0)                         */
+/*                                               */
+/*********************************************** */
+
 function assessPerformance() {
 	/* Function to calculate the "credit_var", which is a boolean used to
 	credit individual experiments in expfactory. 
@@ -169,7 +177,7 @@ var getInstructFeedback = function() {
 
 
 /* ************************************ */
-/* Define experimental variables */
+/* Define experimental variables        */
 /* ************************************ */
 // generic task variables
 var run_attention_checks = false
@@ -362,8 +370,9 @@ var feedback_instruct_block = {
 var instructions_block = {
 	type: 'poldrack-instructions',
 	pages: [
-		'<div class = centerbox><p class = block-text>Dans ce test, vous verrez des groupes de cinq flèches et tirets pointant vers la gauche ou la droite (par exemple : &larr; &larr; &larr; &larr; &larr;, ou &mdash; &mdash; &rarr; &mdash; &mdash;) presentés au hasard en haut ou en bas de l\'écran.</p><p class = block-text>Votre travail consiste à indiquer dans quelle direction pointe la flèche du milieu, en appuyant sur la touche fléchée correspondante.</p></p></p></div>',
-		'<div class = centerbox><p class = block-text>Parfois, avant que les flèches et les tirets n\'apparaissent, un * apparaîtra aléatoirement sur l\'écran.</p><p class = block-text>Indépendamment du fait que * apparaîsse ou non, il est important que vous répondiez aussi rapidement et précisément que possible en appuyant sur la touche fléchée correspondant à la direction de la flèche centrale.</p><p class = block-text>Après avoir terminé les instructions, nous commencerons par un entrainement. Pendant cet entraînement, vous recevrez des commentaires pour savoir si vos réponses sont correctes. Vous ne recevrez pas de commentaire pendant la suite du test.</p></div>'
+		'<div class = centerbox><p class = block-text>Dans ce test, la webcam va suivre le point que vous fixez à l\'écran pendant que vous réalisez la tâche proposée. Il s\'agit d\'une autre manière de mesurer votre niveau d\'attention.</p><p class = block-text>Au tout début, vous devrez aider la webcam en fixant du regard successivement des points particuliers à l\'écran.<p class = block-text>Il y aura ensuite une phase d\'entrainement pour la tâche attentionnelle elle-même.</p></div>',
+		'<div class = centerbox><p class = block-text>Au cours de la tâche attentionnelle, vous verrez des groupes de cinq flèches et tirets pointant vers la gauche ou la droite (par exemple : &larr; &larr; &larr; &larr; &larr;, ou &mdash; &mdash; &rarr; &mdash; &mdash;) presentés au hasard en haut ou en bas de l\'écran.</p><p class = block-text>Votre travail consiste à indiquer dans quelle direction pointe la flèche du milieu, en appuyant sur la touche fléchée correspondante.</p></p></p></div>',
+		'<div class = centerbox><p class = block-text>Parfois, avant que les flèches et les tirets n\'apparaissent, un * apparaîtra aléatoirement sur l\'écran.</p><p class = block-text>Indépendamment du fait que * apparaîsse ou non, il est important que vous répondiez aussi rapidement et précisément que possible en appuyant sur la touche fléchée correspondant à la direction de la flèche centrale.</p><p class = block-text>Après avoir terminé les instructions, nous commencerons par un entrainement. Pendant cet entraînement, vous recevrez des commentaires pour savoir si vos réponses sont correctes. Vous ne recevrez pas de commentaire pendant la suite du test.</p></div>',
 	],
 	allow_keys: false,
 	data: {

@@ -31,11 +31,10 @@
 
         jsPsych.init({ // Passe les OPTIONS dans core.init()
             timeline: attention_network_task_experiment,
-            //display_element: "getDisplayElement", // Inutile avec la v6.3.0
             on_trial_finish: function (data) {
                 addID('attention-network-task')
             },
-
+            
             on_finish: function (data) {
 
                 // Serialize the data
@@ -66,15 +65,6 @@
                         }
                     });
                 })
-                // En fait, appeler la fonction assessPerformance depuis on_finish dans Experiment.js
-                //
-                // console.log("debug");
-                // var myData = jsPsych.data.get().filter({trial_type: 'poldrack-single-stim'}).filterCustom(function(x){return x.trial_num > 0});
-                // //var myData = jsPsych.data.getData().filter({trial_type: 'poldrack-single-stim'}).filterCustom(function(x){return x.trial_num > 0});
-                // var myCorrects = myData.filter({ correct: true }).count()
-                // console.log("correct answers : ", myCorrects)
-                // var myWrongs = myData.filter({ correct: false }).count()
-                // console.log("wrong answers : ", myWrongs)
             }
 
         }); // fin de jsPsych.int()
