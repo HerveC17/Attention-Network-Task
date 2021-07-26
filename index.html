@@ -36,12 +36,12 @@
                 <form method="POST" action="">
                     <p>
                         <label for="examinateur">Examinateur:</label>
-                        <select name="examinateur" id="examinateur">
-                            <option value="">--Choisissez un examinateur--</option>
+                        <select name="examinateur" id="examinateur" onChange="infoModified()">
+                            <option value="0">--Choisissez un examinateur--</option>
                         </select>
                         <label for="site">Site:</label>
-                        <select name="site" id="site">
-                            <option value="">--Choisissez un site--</option>
+                        <select name="site" id="site" onChange="infoModified()">
+                            <option value="0">--Choisissez un site--</option>
                         </select>
                     </p>
                 </form>
@@ -53,19 +53,18 @@
                 <form method="POST" action="">
                     <p>
                         <label for="name">Nom :</label>
-                        <input type="text" id="lName" name="lName" required minlength="1" maxlength="3" size="10">
+                        <input type="text" id="lName" name="lName" required onInput="infoModified()" minlength="1" maxlength="3" size="10">
                     
                         <label for="name">Prénom :</label>
-                        <input type="text" id="fName" name="fName" required minlength="1" maxlength="2" size="10">
+                        <input type="text" id="fName" name="fName" required onInput="infoModified()" minlength="1" maxlength="2" size="10">
                     
                         <label for="sexe">Sexe :</label>
                         <form>
-                            <input type="radio" name="gender" value="Homme">Masculin
-                            <input type="radio" name="gender" value="Femme">Feminin
+                            <input type="radio" name="gender" value="Homme" onInput="infoModified()">Masculin
+                            <input type="radio" name="gender" value="Femme" onInput="infoModified()">Feminin
                         </form>
                         <label for="birth">Date de naissance :</label>
-                        <input type="date" id="birth" name="birth" value="2000-01-01" min="1930-01-01" max="2015-12-31"
-                                    Onblur="calculateAge()">
+                        <input type="date" id="dobPickerId" name="dateOfBirth" min="1930-01-01" readonly Onblur="calculateAge()">
                     </p>
                 </form>
             </div>
@@ -80,13 +79,16 @@
         </div>
         <br/><br/>
         <div>
-            <input type="button" id="buttonGO" value="GO" disabled href="fromGit/index.html">
+            <input type="submit" id="buttonGO" value=" GO " disabled=true onclick="location.href='fromGit/index.html'">
         </div>
     </section>
 
 </body>
 
 <script>
+    dobPickerId.max = new Date().toISOString().split("T")[0];
+    //
+    setTodayAndMaxDate();
     getExaminateur();
     getSite();
 </script>

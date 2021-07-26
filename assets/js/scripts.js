@@ -5,21 +5,22 @@ document.getElementsByTagName('head')[0].appendChild(script);
 
 let ageOfPatient;
 let isChildVersion=false;
+const minAgeAuthorized=5;   // Youngest age of a patient (5 years)
 
-/* ******************************* **/
+/* ******************************** */
 /*                                  */
 /*    Calculate patient's age and   */
-/*    copies it to HTML page        */
+/*    copies it to the document     */
 /*                                  */
 /*    Hervé CACI: July 22nd, 2021   */
 /*                                  */
-/* ******************************* **/
+/* ******************************** */
 
 function calculateAge() {
     // convert user input value into date object and get the
     // difference from current date
     //
-    let dobDate = new Date(document.getElementById("birth").value);
+    let dobDate = new Date(document.getElementById("dobPickerId").value);
     let nowDate = new Date(new Date().setHours(0, 0, 0, 0));
     let years = nowDate.getFullYear() - dobDate.getFullYear();
     let months = nowDate.getMonth() - dobDate.getMonth();
@@ -40,17 +41,61 @@ function calculateAge() {
     if (years) { text = years + (years > 1 ? " ans" : " an"); }
     if (months) {
       if (text.length) { text = text + ", "; }
-      text = text + months + (months > 1 ? " mois" : " mois")
-    }
+      text = text + months + (months > 1 ? " mois" : " mois");
+    } else { text = text + " 0 mois"; }
     if (days) {
       if (text.length) { text = text + ", "; }
-      text = text + days + (days > 1 ? " jours" : " jour")
-    }
+      text = text + days + (days > 1 ? " jours" : " jour");
+    } else { text = text + " 0 jour"; }
     //
     ageOfPatient=text;
     if (years>=11) { isChildVersion=false; }
         else { isChildVersion=true; }
     document.getElementById('Age').value = text;
+}
+
+/* ********************************************* */
+/*                                               */
+/*   Set the value and the upper end of the      */
+/*     date range to today's date minus 5 years. */
+/*                                               */
+/*    Hervé CACI: July 24th, 2021                */
+/*                                               */
+/* ********************************************* */
+
+function setTodayAndMaxDate() {
+    let today = new Date();
+    let dd = today.getDate();
+    if(dd<10) { dd='0'+dd }
+    let mm = today.getMonth()+1; //January is 0 so need to add 1 to make it 1!
+    if(mm<10){ mm='0'+mm }
+    let yyyy = today.getFullYear()-minAgeAuthorized;
+    let todayAndMaxDate = yyyy + '-' + mm + '-' + dd;
+    document.getElementById("dobPickerId").setAttribute("value", todayAndMaxDate);
+    document.getElementById("dobPickerId").setAttribute("max", todayAndMaxDate);
+}
+
+/* ************************************ */
+/*                                      */
+/*    Enable/Disable the GO button      */
+/*    depending of fields empty or not  */
+/*                                      */
+/*    Hervé CACI: July 26th, 2021       */
+/*                                      */
+/* ************************************ */
+
+function infoModified() {
+    let genders = document.getElementsByName("gender");
+    let theGOButton = document.getElementById("buttonGO");
+    let examinateurSelected = document.getElementById("examinateur").value;
+    let siteSelected = document.getElementById("site").value;
+    if ((document.getElementById("lName").value.length==3) && (document.getElementById("fName").value.length==2)
+        && ((genders[0].checked==true) || (genders[1].checked==true)) && (examinateurSelected!="0") && (siteSelected!="0")) {
+            theGOButton.disabled = false;
+        }
+    else { 
+        theGOButton.disabled = true;
+    }
 }
 
 // Test de la sauvegarde des data
@@ -76,8 +121,8 @@ function saveFile() { // saveFile = () => {
         'lName: ' + lastName.value + ' \r\n ' +
         'fName: ' + firstName.value + ' \r\n ' +
         'sexe: ' + sexe + ' \r\n ' +
-        'Date de passation: ' + todayDate.toLocaleDateString() + ' \r\n ' +
-        'Date de naissance: ' + birth.value + ' \r\n ' +
+        'Date de passation: ' + todayDate.toLocaleString('fr-FR') + ' \r\n ' + //.toLocaleDateString()
+        'Date de naissance: ' + dobPickerId.value.toLocaleString('fr-FR') + ' \r\n ' +
         'age: ' + age.value + ' \r\n ' +
         'Child version: ' + isChildVersion + ' \r\n'
 
