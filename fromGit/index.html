@@ -24,6 +24,8 @@
 <script src='js/jspsych/plugins/jspsych-survey-text.js'></script>
 <script src='js/jspsych/poldrack_plugins/jspsych-single-stim-button.js'></script>
 <script src='js/jspsych/poldrack_plugins/poldrack_utils.js'></script>
+<script src="js/jspsych/webgazer.js"></script>
+<script src="js/jspsych/extensions/jspsych-ext-webgazer.js"></script>
 <script src='experiment.js'></script>
 
 <script>
@@ -31,6 +33,9 @@
 
         jsPsych.init({ // Passe les OPTIONS dans core.init()
             timeline: attention_network_task_experiment,
+            extensions: [
+                {type: 'webgazer'}
+            ],
             on_trial_finish: function (data) {
                 addID('attention-network-task')
             },
