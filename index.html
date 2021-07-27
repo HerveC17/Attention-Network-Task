@@ -64,7 +64,9 @@
                             <input type="radio" name="gender" value="Femme" onInput="infoModified()">Feminin
                         </form>
                         <label for="birth">Date de naissance :</label>
-                        <input type="date" id="dobPickerId" name="dateOfBirth" min="1930-01-01" readonly Onblur="calculateAge()">
+                        <input type="date" id="dobPickerId" name="dateOfBirth" min="1930-01-01" readonly onInput="infoModified()" Onblur="infoModified()">
+                        <!--<input type="text" name="ageAndVersion" id= "ageAndVersion" size=25 disabled>-->
+                        <small name="ageAndVersion" id= "ageAndVersion" size=25>Something
                     </p>
                 </form>
             </div>
@@ -72,21 +74,19 @@
     </section>
 
     <section id="section3">
-        <label>Le patient est agé de : </label><input type="text" name="age" id="Age" size="25" disabled>
-        <br/><br/>
         <div>
             <input type="button" id="buttonSave" value="Save data to file" onclick="saveFile()" />
         </div>
         <br/><br/>
         <div>
-            <input type="submit" id="buttonGO" value=" GO " disabled=true onclick="location.href='fromGit/index.html'">
+            <input type="submit" id="buttonGO" value=" GO !! " disabled=true onclick=passData()>
         </div>
     </section>
 
 </body>
 
 <script>
-    dobPickerId.max = new Date().toISOString().split("T")[0];
+ //   dobPickerId.max = new Date().toISOString().split("T")[0];
     //
     setTodayAndMaxDate();
     getExaminateur();

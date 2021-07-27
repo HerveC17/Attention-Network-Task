@@ -194,12 +194,15 @@ var current_trial = 0
 var exp_stage = 'practice' // Variable dans excel
 var test_stimuli = []
 var choices = ['ArrowLeft', 'ArrowRight']	// Flèche gauche et flèche droite (REMPLACEMENT 37 ET 39 DANS V6.3.0)
-var path = 'images/'
-var images = [path + 'right_arrow.png', path + 'left_arrow.png', path + 'no_arrow.png']
-var images_fish = [path + 'right_fish.png', path + 'left_fish.png', path + 'no_fish.png']
 
-//preload
+// Preload images for Child ANT and for Classical ANT
+//
+var path = 'images/'
+var images = [path + 'right_arrow.png', path + 'left_arrow.png', path + 'no_arrow.png', /*
+		*/    path + 'right_fish.png', path + 'left_fish.png', path + 'no_fish.png']
+//var images_fish = [path + 'right_fish.png', path + 'left_fish.png', path + 'no_fish.png']
 jsPsych.pluginAPI.preloadImages(images)
+// jsPsych.phuginAPI.preloadImages(images_fish)
 
 for (l = 0; l < locations.length; l++) { 	// Pour chacune des deux emplacements ("en haut" ou "en bas")
 	var loc = locations[l]
@@ -292,8 +295,6 @@ var block1_trials = jsPsych.randomization.repeat($.extend(true, [], test_stimuli
 var block2_trials = jsPsych.randomization.repeat($.extend(true, [], test_stimuli), 1, true);
 var block3_trials = jsPsych.randomization.repeat($.extend(true, [], test_stimuli), 1, true);
 var blocks = [block1_trials, block2_trials, block3_trials]
-// var blocks = [block1_trials] // Pour n'avoir que 1 bloc de 24 essais
-
 
 /* ************************************ */
 /* Set up jsPsych blocks 				*/

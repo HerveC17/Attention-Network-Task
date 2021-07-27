@@ -3,18 +3,66 @@ script.src = 'https://code.jquery.com/jquery-3.4.1.min.js';
 script.type = 'text/javascript';
 document.getElementsByTagName('head')[0].appendChild(script);
 
-let ageOfPatient;
-let isChildVersion=false;
+var ageOfPatient;
+var isChildVersion=false;
 const minAgeAuthorized=5;   // Youngest age of a patient (5 years)
+var dataToSendToANT;
 
-/* ******************************** */
-/*                                  */
-/*    Calculate patient's age and   */
-/*    copies it to the document     */
-/*                                  */
-/*    Hervé CACI: July 22nd, 2021   */
-/*                                  */
-/* ******************************** */
+function passData() {
+    let sexeRadio = document.getElementsByName('gender');
+    let sexe="Masculin";
+    if (sexeRadio[1].checked) { sexe="Feminin"; }
+    
+    // File name shall reflect the patient's characteristics:
+    //    LastName (3 chars) + firstName (2 chars) + passationDate (8 chars)
+    //    + passationTime (4 chars) + version (A=Adult / c=child) + sex (M/F)
+    // 
+    let todayDate=new Date();
+    let todayMonth=(todayDate.getMonth()+1).toString(); // January is 0
+    if (todayDate.getMonth()<9) { todayMonth='0'+todayMonth; }
+    let fileName = document.getElementById('lName').value.toUpperCase() /*
+         */ + document.getElementById('fName').value.toUpperCase() /*
+         */ + '_' + todayDate.getFullYear() + todayMonth + todayDate.getDate() /*
+         */ + '_' + todayDate.getHours() + todayDate.getMinutes()
+    if (isChildVersion) { fileName = fileName + "_c"; }
+        else { fileName = fileName + "_A"; }
+    if (sexe=="Masculin") { fileName = fileName + "M"; }
+        else { fileName = fileName + "F"; }
+    fileName = fileName + '.txt'
+
+ /*   var dataToSendToANT = {
+        examinateur: document.getElementById('examinateur').value,
+        site: document.getElementById('site').value,
+        lastName: document.getElementById('lName').value,
+        firstName: document.getElementById('fName').value,
+        gender: sexe,
+        dob: document.getElementById('dobPickerId').value,
+        age: document.getElementById('Age').value,
+        version: isChildVersion,
+        fName: fileName
+    }
+    */
+    // Populate storage
+    //
+    localStorage.setItem('examinateur', document.getElementById('examinateur').value);
+    localStorage.setItem('site', document.getElementById('site').value);
+    localStorage.setItem('lastName',document.getElementById('lName').value);
+    localStorage.setItem('firstName',document.getElementById('fName').value);
+    localStorage.setItem('gender', sexe);
+    localStorage.setItem('dob', ageOfPatient);
+    localStorage.setItem('version', isChildVersion);
+    localStorage.setItem('fileName', fileName);
+    window.location.href = "fromGit/index.html";
+}
+
+/* ******************************************************** */
+/*                                                          */
+/*    Calculate patient's age and set boolean according to  */
+/*     the version of the ANT to be used: child/classical   */
+/*                                                          */
+/*                Hervé CACI: July 22nd, 2021               */
+/*                                                          */
+/* ******************************************************** */
 
 function calculateAge() {
     // convert user input value into date object and get the
@@ -41,7 +89,7 @@ function calculateAge() {
     if (years) { text = years + (years > 1 ? " ans" : " an"); }
     if (months) {
       if (text.length) { text = text + ", "; }
-      text = text + months + (months > 1 ? " mois" : " mois");
+      text = text + months + (months > 1 ? " mois et " : " mois et ");
     } else { text = text + " 0 mois"; }
     if (days) {
       if (text.length) { text = text + ", "; }
@@ -51,7 +99,7 @@ function calculateAge() {
     ageOfPatient=text;
     if (years>=11) { isChildVersion=false; }
         else { isChildVersion=true; }
-    document.getElementById('Age').value = text;
+    return [ageOfPatient, isChildVersion];
 }
 
 /* ********************************************* */
@@ -80,7 +128,7 @@ function setTodayAndMaxDate() {
 /*    Enable/Disable the GO button      */
 /*    depending of fields empty or not  */
 /*                                      */
-/*    Hervé CACI: July 26th, 2021       */
+/*    Hervé CACI: July 27th, 2021       */
 /*                                      */
 /* ************************************ */
 
@@ -96,6 +144,12 @@ function infoModified() {
     else { 
         theGOButton.disabled = true;
     }
+    let ageAndVersion = calculateAge();
+    let theAge = ageAndVersion[0];
+    let theVersion = ageAndVersion[1];
+    if (theVersion) { theAge = theAge + ' -- Child version'; }
+        else { theAge = theAge + ' -- Classical version'; }
+    document.getElementById("ageAndVersion").innerText = theAge;
 }
 
 // Test de la sauvegarde des data

@@ -29,6 +29,18 @@
 <script src='experiment.js'></script>
 
 <script>
+
+    // Get back data from the first page
+    //
+    let examPassed = localStorage.getItem('examinateur');
+    let sitePassed = localStorage.getItem('site');
+    let lastName = localStorage.getItem('lastName');
+    let firstName = localStorage.getItem('firstName');
+    let sexe = localStorage.getItem('gender');
+    let dateOfBirth = localStorage.getItem('dob');
+    let theVersion = localStorage.getItem('version');
+    let theFileName = localStorage.getItem('fileName');
+
     $(document).ready(function () {
 
         jsPsych.init({ // Passe les OPTIONS dans core.init()
