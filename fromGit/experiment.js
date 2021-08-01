@@ -174,8 +174,6 @@ var getInstructFeedback = function() {
 		'</p></div>'
 }
 
-
-
 /* ************************************ */
 /* Define experimental variables        */
 /* ************************************ */
@@ -197,21 +195,30 @@ var choices = ['ArrowLeft', 'ArrowRight']	// Flèche gauche et flèche droite (R
 
 // Preload images for Child ANT and for Classical ANT
 //
-var path = 'images/'
+var isChildVersion = localStorage.getItem('version');
+let path = 'images/'
 var images = [path + 'right_arrow.png', path + 'left_arrow.png', path + 'no_arrow.png', /*
 		*/    path + 'right_fish.png', path + 'left_fish.png', path + 'no_fish.png']
-//var images_fish = [path + 'right_fish.png', path + 'left_fish.png', path + 'no_fish.png']
-jsPsych.pluginAPI.preloadImages(images)
-// jsPsych.phuginAPI.preloadImages(images_fish)
+if (isChildVersion=="true") {
+	var offset0=3, offset1=4, offset2=5;
+	var theClass="<div class=centerboxBlue>";
+	}
+	else {
+		var offset0=0, offset1=1, offset2=2;
+		var theClass="<div class=centerbox>";
+	}
+jsPsych.pluginAPI.preloadImages(images);
 
 for (l = 0; l < locations.length; l++) { 	// Pour chacune des deux emplacements ("en haut" ou "en bas")
 	var loc = locations[l]
 	for (ci = 0; ci < cues.length; ci++) { 	// Pour chacun des types de cue: cues.length ("nocue", "center", "double", "spatial")
 		var c = cues[ci]
-		stims = [{
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc + // "locup" ou "locdown"
-				'><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[1] +
-				'></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img></div></div>',
+		stims = [{ // Neutral: target turned left
+			stimulus: theClass + '<div class = ANT_text>+</div></div><div class = ANT_' + loc + // "locup" ou "locdown"
+				'><img class = ANT_img src = ' + images[offset2] + '></img><img class = ANT_img src = ' +
+				images[offset2] + '></img><img class = ANT_img src = ' + images[offset1] +
+				'></img><img class = ANT_img src = ' + images[offset2] + '></img><img class = ANT_img src = ' + images[offset2] +
+				'></img></div></div>',
 			data: {
 				correct_response: 'ArrowLeft',
 				flanker_middle_direction: 'left',
@@ -220,9 +227,11 @@ for (l = 0; l < locations.length; l++) { 	// Pour chacune des deux emplacements 
 				cue: c, 
 				trial_id: 'stim'
 			}
-		}, {
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-				'><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img></div></div>',
+		}, { // Congruent: all arrows/fishes turned left
+			stimulus: theClass + '<div class = ANT_text>+</div></div><div class = ANT_' + loc +
+				'><img class = ANT_img src = ' + images[offset1] + '></img><img class = ANT_img src = ' + images[offset1] +
+				'></img><img class = ANT_img src = ' + images[offset1] + '></img><img class = ANT_img src = ' + images[offset1] +
+				'></img><img class = ANT_img src = ' + images[offset1] + '></img></div></div>',
 			data: {
 				correct_response: 'ArrowLeft',
 				flanker_middle_direction: 'left',
@@ -231,9 +240,11 @@ for (l = 0; l < locations.length; l++) { 	// Pour chacune des deux emplacements 
 				cue: c, 
 				trial_id: 'stim'
 			}
-		}, {
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-				'><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img></div></div>',
+		}, { // Incongruent: target turned left, others turned right
+			stimulus: theClass + '<div class = ANT_text>+</div></div><div class = ANT_' + loc +
+				'><img class = ANT_img src = ' + images[offset0] + '></img><img class = ANT_img src = ' + images[offset0] +
+				'></img><img class = ANT_img src = ' + images[offset1] + '></img><img class = ANT_img src = ' + images[offset0] +
+				'></img><img class = ANT_img src = ' + images[offset0] + '></img></div></div>',
 			data: {
 				correct_response: 'ArrowLeft',
 				flanker_middle_direction: 'left',
@@ -242,9 +253,11 @@ for (l = 0; l < locations.length; l++) { 	// Pour chacune des deux emplacements 
 				cue: c, 
 				trial_id: 'stim'
 			}
-		}, {
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-				'><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[2] + '></img><img class = ANT_img src = ' + images[2] + '></img></div></div>',
+		}, { // Neutral: target turned right 
+			stimulus: theClass + '<div class = ANT_text>+</div></div><div class = ANT_' + loc +
+				'><img class = ANT_img src = ' + images[offset2] + '></img><img class = ANT_img src = ' + images[offset2] +
+				'></img><img class = ANT_img src = ' + images[offset0] + '></img><img class = ANT_img src = ' + images[offset2] +
+				'></img><img class = ANT_img src = ' + images[offset2] + '></img></div></div>',
 			data: {
 				correct_response: 'ArrowRight',
 				flanker_middle_direction: 'right',
@@ -253,9 +266,11 @@ for (l = 0; l < locations.length; l++) { 	// Pour chacune des deux emplacements 
 				cue: c, 
 				trial_id: 'stim'
 			}
-		}, {
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-				'><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[0] + '></img></div></div>',
+		}, { // Congruent: all arrows/fishes turned right
+			stimulus: theClass + '<div class = ANT_text>+</div></div><div class = ANT_' + loc +
+				'><img class = ANT_img src = ' + images[offset0] + '></img><img class = ANT_img src = ' + images[offset0] +
+				'></img><img class = ANT_img src = ' + images[offset0] + '></img><img class = ANT_img src = ' + images[offset0] +
+				'></img><img class = ANT_img src = ' + images[offset0] + '></img></div></div>',
 			data: {
 				correct_response: 'ArrowRight',
 				flanker_middle_direction: 'right',
@@ -264,9 +279,11 @@ for (l = 0; l < locations.length; l++) { 	// Pour chacune des deux emplacements 
 				cue: c, 
 				trial_id: 'stim'
 			}
-		}, {
-			stimulus: '<div class = centerbox><div class = ANT_text>+</div></div><div class = ANT_' + loc +
-				'><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[0] + '></img><img class = ANT_img src = ' + images[1] + '></img><img class = ANT_img src = ' + images[1] + '></img></div></div>',
+		}, { // Incongruent: target turned right
+			stimulus: theClass + '<div class = ANT_text>+</div></div><div class = ANT_' + loc +
+				'><img class = ANT_img src = ' + images[offset1] + '></img><img class = ANT_img src = ' + images[offset1] +
+				'></img><img class = ANT_img src = ' + images[offset0] + '></img><img class = ANT_img src = ' + images[offset1] +
+				'></img><img class = ANT_img src = ' + images[offset1] + '></img></div></div>',
 			data: {
 				correct_response: 'ArrowRight',
 				flanker_middle_direction: 'right',
@@ -357,6 +374,10 @@ var end_block = {
 
 var feedback_instruct_text =
 	'Bienvenue sur le test. Le test va durer environ 15 minutes. Appuyez sur la touche <strong>entrée</strong> pour commencer.'
+
+// This ensures that the subject does not read through the instructions too quickly.
+// If they do it too quickly, then we will go over the loop again.
+//
 var feedback_instruct_block = {
 	type: 'poldrack-text',
 	cont_key: ['Enter'], // remplacé 13 par Enter
@@ -365,23 +386,50 @@ var feedback_instruct_block = {
 		trial_id: 'instruction'
 	},
 	timing_post_trial: 0,
-	timing_response: 1800 // 180000
+	timing_response: 180000
 };
-/// This ensures that the subject does not read through the instructions too quickly.  If they do it too quickly, then we will go over the loop again.
-var instructions_block = {
-	type: 'poldrack-instructions',
-	pages: [
-		'<div class = centerbox><p class = block-text>Dans ce test, la webcam va suivre le point que vous fixez à l\'écran pendant que vous réalisez la tâche proposée. Il s\'agit d\'une autre manière de mesurer votre niveau d\'attention.</p><p class = block-text>Au tout début, vous devrez aider la webcam en fixant du regard successivement des points particuliers à l\'écran.<p class = block-text>Il y aura ensuite une phase d\'entrainement pour la tâche attentionnelle elle-même.</p></div>',
-		'<div class = centerbox><p class = block-text>Au cours de la tâche attentionnelle, vous verrez des groupes de cinq flèches et tirets pointant vers la gauche ou la droite (par exemple : &larr; &larr; &larr; &larr; &larr;, ou &mdash; &mdash; &rarr; &mdash; &mdash;) presentés au hasard en haut ou en bas de l\'écran.</p><p class = block-text>Votre travail consiste à indiquer dans quelle direction pointe la flèche du milieu, en appuyant sur la touche fléchée correspondante.</p></p></p></div>',
-		'<div class = centerbox><p class = block-text>Parfois, avant que les flèches et les tirets n\'apparaissent, un * apparaîtra aléatoirement sur l\'écran.</p><p class = block-text>Indépendamment du fait que * apparaîsse ou non, il est important que vous répondiez aussi rapidement et précisément que possible en appuyant sur la touche fléchée correspondant à la direction de la flèche centrale.</p><p class = block-text>Après avoir terminé les instructions, nous commencerons par un entrainement. Pendant cet entraînement, vous recevrez des commentaires pour savoir si vos réponses sont correctes. Vous ne recevrez pas de commentaire pendant la suite du test.</p></div>',
-	],
-	allow_keys: false,
-	data: {
-		trial_id: 'instruction'
-	},
-	show_clickable_nav: true,
-	timing_post_trial: 1000
-};
+
+if (isChildVersion=="true") {
+	document.body.style.backgroundColor = 'rgb(0,253,255)';	// Background is blue for the child version
+	var fixationDuration = 450; // milliseconds
+	var cueDuration = 150;		// milliseconds
+	var instructions_block = {
+		type: 'poldrack-instructions',
+		pages: [	/* Enlevé <p class=block-text> le 30/07/2021 par HC */
+			'<div class=centerbox>Le jeu consiste à nourrir un petit poisson en appuyant sur la touche qui correspond au côté vers lequel il est tourné.<br/><br/>Si tu vois que le poisson regarde à droite, il faut que tu appuies le plus vite possible sur la flèche droite &rarr;.<br/><br/><img class=ANT_imginstructions src=' + images[3] + '><br/><br/>Si tu vois qu’il regarde à gauche, il faut que tu appuies le plus vite possible sur la flèche gauche &larr;.<br/><br/><img class=ANT_img src=' + images[4] + '></div>',
+			'<div class=centerbox>Quelquefois le petit poisson est tout seul mais d\’autres fois il nage entouré de copains poissons.<br/><br/>Tu dois toujours faire attention au côté vers lequel regarde le poisson du <strong>milieu</strong> et ne jamais t\’occuper du côté vers lequel regardent les copains poissons.<br/><br/>Tu dois appuyer sur la flèche droite &rarr; si tu vois ceci<br/><br/><img class=ANT_img src='+ images[3] +'><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[3] + '><br/><br/>Tu dois <strong>aussi</strong> appuyer sur la flèche droite &rarr; vois cela!<br/><br/><img class=ANT_img src='+ images[4] +'><img class=ANT_img src=' + images[4] + '><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[4] + '><img class=ANT_img src=' + images[4] + '></div>',
+			'<div class=centerbox>Tu dois appuyer sur la flèche gauche &larr; si tu vois ceci<br/><br/><img class=ANT_img src=' + images[4] + '><img class=ANT_img src=' + images[4] + '><img class=ANT_img src=' + images[4]+'><img class=ANT_img src=' + images[4]+'><img class=ANT_img src=' + images[4] + '><br/><br/>Tu dois <strong>aussi</strong> appuyer sur la flèche gauche &larr; si tu vois cela!<br/><br/><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[4]+'><img class=ANT_img src=' + images[3]+'><img class=ANT_img src=' + images[3] + '><br/><br/>Tu as bien compris ce qu\'il faut faire ?</div>',
+			'<div class=centerbox>Pendant toute la durée du jeu, tu devras bien fixer du regard la croix au milieu de l’écran et réagir le plus rapidement possible quand tu verras apparaître le poisson ou un groupe de poissons. Une étoile t\'indiquera l\'endroit (au dessus ou en dessous) où va apparaître le poisson ou un groupe de poissons, mais parfois il y aura une étoile sur la croix ou deux étoiles (au dessus et en dessous de la croix) et tu devras faire très attention.<br/><br/>Pendant toute la durée du jeu, la webcam de l’ordinateur enregistrera le point que tu regardes sur l’écran (la croix, un poisson ou autre chose). Cela nous permettra de mieux mesurer l\'attention que tu portes au jeu.<br/><br/>Avant de jouer, il faudra apprendre à la caméra à suivre ton regard. Cela prendra quelques secondes seulement.<br/><br/>Ensuite, tu pourras t\'entraîner avant de jouer tout seul pour de vrai et pouvoir marquer des points.<br/><br/>Clique pour régler la caméra.</div>'
+		],
+		allow_keys: false,
+		data: {
+			trial_id: 'instruction'
+		},
+		show_clickable_nav: true,
+		timing_post_trial: 1000
+	};
+}
+else {
+	document.body.style.backgroundColor = "white";	// Background is white for the classical version
+	var fixationDuration = 400; // milliseconds
+	var cueDuration = 100;		// milliseconds
+	var instructions_block = {
+		type: 'poldrack-instructions',
+		pages: [
+			'<div class = centerbox><class = block-text>Le test consiste à cliquer le plus vite possible sur la touche flèche gauche (&larr;) dès que vous voyez<br/><img class=ANT_img src=' + images[1] + '><br>et sur la touche flèche droite (&rarr;) dès que vous voyez<br/><br/><img class=ANT_img src=' + images[0] +'><br/>Cette flèche peut apparaître entourée de deux traits de part et d’autre ou de deux flèches de part et d’autre. Vous devez toujours faire attention à la flèche du <strong>milieu</strong> et appuyez sur la touche qui correspond à la direction vers laquelle elle pointe.</div>',
+			'<div class = centerbox><class = block-text>Il faut appuyer sur la flèche droite (&larr;) si vous voyez l’une de ces trois configurations<img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[1] + '><br/><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[0] + '><br/><img class=ANT_img src=' + images[2] + '><img class=ANT_img src=' + images[2] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[2] + '><img class=ANT_img src=' + images[2] + '></div>',
+			'<div class = centerbox><class = block-text>Il faut appuyer sur la flèche droite (&rarr;) si vous voyez l’une de ces trois configurations<img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[0] + '><br/><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[1] + '><br/><img class=ANT_img src=' + images[2] + '><img class=ANT_img src=' + images[2] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[2] + '><img class=ANT_img src=' + images[2] + '></div>',
+			'<div class = centerbox><class = block-text>Tout au long du test, vous devrez fixer une croix au centre de l’écran.<br/><br/>Parfois, une étoile (*) apparaîtra juste avant les flèches soit au même endroit (au dessus ou en dessous de la croix), soit sur la croix elle-même, soit deux étoiles apparaîtront à la fois au dessus et en dessous de la croix.<br/><br/>Attention! il se peut qu\'aucune étoile n\'apparaissent mais, dans tous les cas, vous devrez appuyer sur la bonne touche le plus vite possible <strong>après</strong> que les flèches soient affichées.<br/><br/>Avant de commencer le test, vous suivrez une séance d\’entraînement. A chaque fois, le mot « Correct » ou « Incorrect » vous indiquera si vous avez bien respecté la consigne ou pas. Ensuite, pendant le test, aucune information ne vous sera donnée.</div>',
+			'<div class = centerbox><class = block-text>Pendant toute la durée du test, la webcam de l\’ordinateur enregistrera le point que vous regardez sur l\’écran (la croix, une flèche ou autre chose). Cela nous permettra de mieux mesurer votre attention pendant la durée du test.<br/><br/>Avant la séance d\’entraînement au test proprement dit, il faudra apprendre à la caméra à suivre votre regard. Cela ne prendra que quelques secondes.<br/><br/>Cliquez pour paramétrer la webcam.</div>'
+		],
+		allow_keys: false,
+		data: {
+			trial_id: 'instruction'
+		},
+		show_clickable_nav: true,
+		timing_post_trial: 1000
+	};
+}
 
 var instruction_node = {
 	timeline: [feedback_instruct_block, instructions_block],
@@ -417,15 +465,15 @@ var rest_block = {
 
 var fixation = {
 	type: 'poldrack-single-stim',
-	stimulus: '<div class = centerbox><div class = ANT_text>+</div></div>',				// Affiche la "+" de fixation au centre
+	stimulus: '<div class = centerbox><div class = ANT_text>+</div></div>',		// Affiche la "+" de fixation au centre
 	is_html: true,
 	choices: 'none',
 	data: {
 		trial_id: 'fixation'
 	},
 	timing_post_trial: 0,
-	timing_stim: 400,
-	timing_response: 400,		// Fixation de 400 ms TOUJOURS (après cue de 199 ms) 
+	timing_stim: fixationDuration,		// 400 ms for adults, 450 ms for children
+	timing_response: fixationDuration, 
 	on_finish: function() {
 		jsPsych.data.addDataToLastTrial({
 			exp_stage: exp_stage
@@ -442,8 +490,8 @@ var no_cue = {
 		trial_id: 'nocue'
 	},
 	timing_post_trial: 0,
-	timing_stim: 100,
-	timing_response: 100,
+	timing_stim: cueDuration,		// 100 ms for adults, 150 ms for children
+	timing_response: cueDuration,
 	on_finish: function() {
 		jsPsych.data.addDataToLastTrial({
 			exp_stage: exp_stage
@@ -460,8 +508,8 @@ var center_cue = {
 		trial_id: 'centercue'
 	},
 	timing_post_trial: 0,
-	timing_stim: 100,
-	timing_response: 100,
+	timing_stim: cueDuration,		// 100 ms for adults, 150 ms for children,
+	timing_response: cueDuration,
 	on_finish: function() {
 		jsPsych.data.addDataToLastTrial({
 			exp_stage: exp_stage
@@ -481,8 +529,8 @@ var double_cue = {
 		trial_id: 'doublecue'
 	},
 	timing_post_trial: 0,
-	timing_stim: 100,
-	timing_response: 100,
+	timing_stim: cueDuration,		// 100 ms for adults, 150 ms for children,
+	timing_response: cueDuration,
 	on_finish: function() {
 		jsPsych.data.addDataToLastTrial({
 			exp_stage: exp_stage
@@ -493,11 +541,30 @@ var double_cue = {
 /* set up ANT experiment */
 var attention_network_task_experiment = [];
 
+var goToFullScreen = {
+	type: 'fullscreen',
+	fullscreen_mode: true
+}
+var exitFromFullScreen = {
+	type: 'fullscreen',
+	fullscreen_mode: false
+}
+
 // Create the instruction node in the timeliine
 //
+attention_network_task_experiment.push(goToFullScreen);
 attention_network_task_experiment.push(instruction_node);
 
 /* set up ANT practice */
+/*
+/*	  Adults:	random fixation (D1 ms) - cue (100 ms) - fixed fixation (400 ms)
+/*				target & feedback (< 1700 ms --> rt) - post trial (3500 - D1 - rt ms)
+/*
+/*	  Children:	random fixation (D1 ms) - cue (150 ms) - fixed fixation (450 ms)
+/*				target & feedback (< 1700 ms --> rt) - post trial (3500 - D1 - rt ms)
+/*
+/*    ATTENTION! Feedback in the plug-in "poldrack-categorize"
+*/
 var trial_num = 0
 var block = practice_block
 for (i = 0; i < block.data.length; i++) {
@@ -516,8 +583,8 @@ for (i = 0; i < block.data.length; i++) {
 			exp_stage: 'practice'
 		},
 		timing_post_trial: 0,
-		timing_stim: first_fixation_gap,		// D1
-		timing_response: first_fixation_gap		// D1
+		timing_stim: first_fixation_gap,		// D1 -- Same for children and adults
+		timing_response: first_fixation_gap		// D1 -- Same for children and adults
 	}
 	attention_network_task_experiment.push(first_fixation)
 
@@ -541,8 +608,8 @@ for (i = 0; i < block.data.length; i++) {
 				exp_stage: 'practice'
 			},
 			timing_post_trial: 0,
-			timing_stim: 100,
-			timing_response: 100
+			timing_stim: cueDuration,		// 100 ms for adults, 150 ms for children
+			timing_response: cueDuration
 		}
 		attention_network_task_experiment.push(spatial_cue)
 	}
@@ -562,7 +629,7 @@ for (i = 0; i < block.data.length; i++) {
 		timeout_message: '<div class = centerbox><div class = center-text>Répondez plus vite !</div></div>',
 		choices: choices,
 		data: block.data[i],
-		timing_response: 1700,
+		timing_response: 1700,						// 1700 ms limit !
 		timing_stim: 1700,
 		response_ends_trial: true,
 		timing_feedback_duration: 1000,
@@ -574,9 +641,16 @@ for (i = 0; i < block.data.length; i++) {
 			})
 		}
 	}
-
+	if (isChildVersion = "true") { // localStorage.getItem('version')
+		attention_network_task_practice_trial.correct_text='<div class = centerbox><div style="color:black"; class = center-text>Child OK!</div></div';
+		attention_network_task_practice_trial.incorrect_text='<div class = centerbox><div style="color:black"; class = center-text>Child BAD!</div></div';
+	}
+	
 	attention_network_task_experiment.push(attention_network_task_practice_trial)
 
+	// For adults, fixation cross at the center of the screen for 3500-D1-rt milliseconds
+	// For children, audio and visual feedback
+	//
 	var last_fixation = {
 		type: 'poldrack-single-stim',
 		stimulus: '<div class = centerbox><div class = ANT_text>+</div></div>',
@@ -595,7 +669,6 @@ for (i = 0; i < block.data.length; i++) {
 
 attention_network_task_experiment.push(rest_block)
 attention_network_task_experiment.push(test_intro_block);
-
 
 /* Set up ANT main task */
 
@@ -620,8 +693,8 @@ for (b = 0; b < blocks.length; b++) { 			// Pour chaque bloc de 48 essais
 				exp_stage: 'test'
 			},
 			timing_post_trial: 0,
-			timing_stim: first_fixation_gap,
-			timing_response: first_fixation_gap
+			timing_stim: first_fixation_gap,		// D1 -- Same for children and adults
+			timing_response: first_fixation_gap		// D1 -- Same for children and adults
 		}
 		attention_network_task_experiment.push(first_fixation)
 
@@ -645,8 +718,8 @@ for (b = 0; b < blocks.length; b++) { 			// Pour chaque bloc de 48 essais
 					exp_stage: 'test'
 				},
 				timing_post_trial: 0,
-				timing_stim: 100,
-				timing_response: 100
+				timing_stim: cueDuration,	// 100 ms for adults, 150 ms for children
+				timing_response: cueDuration,	// 100 ms for adults, 150 ms for children
 			}
 			attention_network_task_experiment.push(spatial_cue)
 		}
@@ -707,5 +780,4 @@ for (b = 0; b < blocks.length; b++) { 			// Pour chaque bloc de 48 essais
 //attention_network_task_experiment.push(post_task_block) // Questionnaire
 
 attention_network_task_experiment.push(end_block) // Fin de l'expérience
-
-
+attention_network_task_experiment.push(exitFromFullScreen) // Sort du mode plein écran

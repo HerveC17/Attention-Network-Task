@@ -967,8 +967,6 @@ window.jsPsych = (function() {
   }
 
   function doTrial(trial) {
-    
-    console.log("trial : ", trial);
 
     current_trial = trial;
     current_trial_finished = false;

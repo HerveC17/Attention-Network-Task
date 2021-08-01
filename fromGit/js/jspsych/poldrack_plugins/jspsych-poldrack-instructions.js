@@ -93,11 +93,6 @@ jsPsych.plugins['poldrack-instructions'] = (function() {
     trial.allow_keys = (typeof trial.allow_keys === 'undefined') ? true : trial.allow_keys;
     trial.show_clickable_nav = (typeof trial.show_clickable_nav === 'undefined') ? false : trial.show_clickable_nav;
 
-    // if any trial variables are functions
-    // this evaluates the function and replaces
-    // it with the output of the function
-    //trial = jsPsych.pluginAPI.evaluateFunctionParameters(trial); // EISENBERG
-
     var current_page = 0;
 
     var view_history = [];
@@ -106,14 +101,13 @@ jsPsych.plugins['poldrack-instructions'] = (function() {
 
     var last_page_update_time = start_time;
 
-    // buttonListener probablement supprimé par Eisenberg
-    //
-
     function show_current_page() {
       
+      // If navigation is allowed, create a div with the required buttons
+      //
       if (trial.show_clickable_nav) {
+        var nav_html = "<div class='jspsych-instructions-nav'>";  
 
-        var nav_html = "<div class='jspsych-instructions-nav'>";
         if (trial.pages.length == 1) {
           nav_html += "<button id='jspsych-instructions-next'>Fin des consignes</button>"
         } else {
@@ -133,7 +127,8 @@ jsPsych.plugins['poldrack-instructions'] = (function() {
         }
         nav_html += "</div>"
 
-        // Place nav_html into the container div for the instruction page and display
+        // Place nav_html into (at the end of) the container div for the instruction page and display
+        //
         if (trial.pages[current_page].slice(-6) == '</div>') {
           display_element.innerHTML = trial.pages[current_page].slice(0, -6) + nav_html + '</div>'
         } else {
@@ -151,68 +146,8 @@ jsPsych.plugins['poldrack-instructions'] = (function() {
           clear_button_handlers();
           next();
         });
-
-    //   display_element.innerHTML = html;
-    //   if (current_page != 0 && trial.allow_backward) {
-    //     display_element.querySelector('#jspsych-instructions-back').addEventListener('click', btnListener);
-    //   }
-
-    //   display_element.querySelector('#jspsych-instructions-next').addEventListener('click', btnListener);
-    // } else {
-    //   if (trial.show_page_number && trial.pages.length > 1) {
-    //     // page numbers for non-mouse navigation
-    //     html += "<div class='jspsych-instructions-pagenum'>" + pagenum_display + "</div>"
-    //   }
-    //   display_element.innerHTML = html;
+      }
     }
-  }
-
-    // Version Eisenberg
-    //
-    // function show_current_page() {
-    //   if (trial.show_clickable_nav) {
-    
-    //     var nav_html = "<div class='jspsych-instructions-nav'>";
-    //     if (trial.pages.length == 1) {
-    //       nav_html += "<button id='jspsych-instructions-next'>Fin des consignes</button>"
-    //     } else {
-    //       if (current_page == 0) {
-    //         nav_html += "<button id='jspsych-instructions-next'>Suivant</button>"
-    //       } else if (current_page == trial.pages.length - 1) {
-    //         if (trial.allow_backward) {
-    //           nav_html += "<button id='jspsych-instructions-back'>Retour</button>";
-    //         }
-    //         nav_html += "<button id='jspsych-instructions-next'>Fin des consignes</button>"
-    //       } else {
-    //         if (trial.allow_backward) {
-    //           nav_html += "<button id='jspsych-instructions-back'>Retour</button>";
-    //         }
-    //         nav_html += "<button id='jspsych-instructions-next'>Suivant</button>"
-    //       }
-    //     }
-    //     nav_html += "</div>"
-
-    //     // Place nav_html into the container div for the instruction page and display
-    //     if (trial.pages[current_page].slice(-6) == '</div>') {
-    //       display_element.html(trial.pages[current_page].slice(0, -6) + nav_html + '</div>')
-    //     } else {
-    //       display_element.html(trial.pages[current_page] + nav_html + '</div>')
-    //     }
-
-
-    //     if (current_page != 0 && trial.allow_backward) {
-    //       $('#jspsych-instructions-back').on('click', function() {
-    //         clear_button_handlers();
-    //         back();
-    //       });
-    //     }
-
-    //     $('#jspsych-instructions-next').on('click', function() {
-    //       clear_button_handlers();
-    //       next();
-    //     });
-    //   }
-    // }
 
     function clear_button_handlers() {
       $('#jspsych-instructions-next').off('click');

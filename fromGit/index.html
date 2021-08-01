@@ -15,6 +15,7 @@
 <script src='js/math.min.js'></script>
 <script src="js/jspsych/jspsych2.js"></script>
 <script src='js/jspsych/plugins/jspsych-text.js'></script>
+<script src='js/jspsych/plugins/jspsych-fullscreen.js'></script>
 <script src='js/jspsych/poldrack_plugins/jspsych-poldrack-text.js'></script>
 <script src='js/jspsych/poldrack_plugins/jspsych-poldrack-categorize.js'></script>
 <script src='js/jspsych/poldrack_plugins/jspsych-poldrack-instructions.js'></script>
@@ -32,14 +33,14 @@
 
     // Get back data from the first page
     //
-    let examPassed = localStorage.getItem('examinateur');
-    let sitePassed = localStorage.getItem('site');
-    let lastName = localStorage.getItem('lastName');
-    let firstName = localStorage.getItem('firstName');
-    let sexe = localStorage.getItem('gender');
-    let dateOfBirth = localStorage.getItem('dob');
-    let theVersion = localStorage.getItem('version');
-    let theFileName = localStorage.getItem('fileName');
+    var examPassed = localStorage.getItem('examinateur');
+    var sitePassed = localStorage.getItem('site');
+    var lastName = localStorage.getItem('lastName');
+    var firstName = localStorage.getItem('firstName');
+    var sexe = localStorage.getItem('gender');
+    var dateOfBirth = localStorage.getItem('dob');
+ //   var isChildVersion = localStorage.getItem('version');
+    var theFileName = localStorage.getItem('fileName');
 
     $(document).ready(function () {
 

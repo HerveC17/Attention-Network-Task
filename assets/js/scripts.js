@@ -8,7 +8,22 @@ var isChildVersion=false;
 const minAgeAuthorized=5;   // Youngest age of a patient (5 years)
 var dataToSendToANT;
 
+/* ************************************ */
+/*                                      */
+/*   Pass data to the experiment page   */
+/*                                      */
+/*     Hervé CACI:  July 27th, 2021     */
+/*                                      */
+/* ************************************ */
+//
+//   1. File storage to be modified later (PDF, etc.)
+// x 2. Same format for date and dob
+//   3. Code to be optimized
+
 function passData() {
+
+    writePDF();
+
     let sexeRadio = document.getElementsByName('gender');
     let sexe="Masculin";
     if (sexeRadio[1].checked) { sexe="Feminin"; }
@@ -17,32 +32,31 @@ function passData() {
     //    LastName (3 chars) + firstName (2 chars) + passationDate (8 chars)
     //    + passationTime (4 chars) + version (A=Adult / c=child) + sex (M/F)
     // 
-    let todayDate=new Date();
-    let todayMonth=(todayDate.getMonth()+1).toString(); // January is 0
-    if (todayDate.getMonth()<9) { todayMonth='0'+todayMonth; }
-    let fileName = document.getElementById('lName').value.toUpperCase() /*
-         */ + document.getElementById('fName').value.toUpperCase() /*
-         */ + '_' + todayDate.getFullYear() + todayMonth + todayDate.getDate() /*
-         */ + '_' + todayDate.getHours() + todayDate.getMinutes()
+    todayDate=new Date();
+    let todayMonth=(todayDate.getMonth()+1).toString();
+    if (todayDate.getMonth()<9) { todayMonth='0'+todayMonth; }  // 2 characters for Month
+    let todayDay=todayDate.getDate().toString();
+    if (todayDay.length<2) { todayDay = "0"+todayDay; }         // 2 characters for Day
+    let todayHour=todayDate.getHours().toString();
+    if (todayHour.length<2) { todayHour = "0"+todayHour; }
+    let todayMin=todayDate.getMinutes().toString();
+    if (todayMin.length<2) { todayMin = "0"+todayMin; }
+    let fileName = document.getElementById('lName').value.toString().toUpperCase() /*
+    */ + document.getElementById('fName').value.toString().toUpperCase() /*
+    */ + '_' + todayDate.getFullYear() + todayMonth + todayDay /*
+    */ + '_' + todayHour + todayMin
     if (isChildVersion) { fileName = fileName + "_c"; }
         else { fileName = fileName + "_A"; }
     if (sexe=="Masculin") { fileName = fileName + "M"; }
         else { fileName = fileName + "F"; }
     fileName = fileName + '.txt'
 
- /*   var dataToSendToANT = {
-        examinateur: document.getElementById('examinateur').value,
-        site: document.getElementById('site').value,
-        lastName: document.getElementById('lName').value,
-        firstName: document.getElementById('fName').value,
-        gender: sexe,
-        dob: document.getElementById('dobPickerId').value,
-        age: document.getElementById('Age').value,
-        version: isChildVersion,
-        fName: fileName
-    }
-    */
-    // Populate storage
+    var dateOfBirth=dobPickerId.value.toLocaleString('fr-FR'); // 2016-08-01
+    let dateOfBirthDay=dateOfBirth.substring(8,10);
+    let dateOfBirthMonth=dateOfBirth.substring(5,7);
+    let dateOfBirthYear=dateOfBirth.substring(0,4);
+
+    // Populate storage and go to the next page
     //
     localStorage.setItem('examinateur', document.getElementById('examinateur').value);
     localStorage.setItem('site', document.getElementById('site').value);
@@ -52,6 +66,38 @@ function passData() {
     localStorage.setItem('dob', ageOfPatient);
     localStorage.setItem('version', isChildVersion);
     localStorage.setItem('fileName', fileName);
+
+    // A modifier plus tard
+    //
+
+    let data = 
+        '\rExaminateur: ' + document.getElementById('examinateur').value + ' \r\n' +
+        'Site: ' + document.getElementById('site').value + ' \r\n' +
+        'Nom: ' + document.getElementById('lName').value.toUpperCase() + ' \r\n' +
+        'Prenom: ' + document.getElementById('fName').value.toUpperCase() + ' \r\n' +
+        'Sexe: ' + sexe + ' \r\n' +
+        'Date de passation: ' + todayDay + '-' + todayMonth + '-' + todayDate.getFullYear() + ' \r\n' +
+        'Heure de passation: ' + todayHour + ':' + todayMin + '\r\n' +
+        'Date de naissance: ' + dateOfBirthDay + '-' + dateOfBirthMonth + '-' + dateOfBirthYear + '\r\n' +
+        'Age: ' + ageOfPatient + ' \r\n' +
+        'Child version: ' + isChildVersion + ' \r\n'
+    
+    const textToBLOB = new Blob([data], {type : 'text/plain' });
+    let newLink = document.createElement("a");
+    newLink.download = fileName;
+
+    if (window.webkitURL != null) {
+        newLink.href = window.webkitURL.createObjectURL(textToBLOB);
+    }
+    else {
+        newLink.href = window.URL.createObjectURL(textToBLOB);
+        newLink.style.display = "none";
+        document.body.appendChild(newLink);
+    }
+    newLink.click();
+    
+    // Go to next page (JSPsych)
+    //
     window.location.href = "fromGit/index.html";
 }
 
@@ -85,14 +131,15 @@ function calculateAge() {
     //
     years = parseInt(months / 12);
     months -= (years * 12);
-    let text = "";
-    if (years) { text = years + (years > 1 ? " ans" : " an"); }
+//   let text = "";
+//    if (years) { text = years + (years > 1 ? " ans" : " an"); }
+    let text = years + (years > 1 ? " ans, " : " an, ");
     if (months) {
-      if (text.length) { text = text + ", "; }
+//     if (text.length) { text = text + ", "; }
       text = text + months + (months > 1 ? " mois et " : " mois et ");
-    } else { text = text + " 0 mois"; }
+    } else { text = text + " 0 mois et "; }
     if (days) {
-      if (text.length) { text = text + ", "; }
+//     if (text.length) { text = text + ", "; }
       text = text + days + (days > 1 ? " jours" : " jour");
     } else { text = text + " 0 jour"; }
     //
@@ -102,14 +149,14 @@ function calculateAge() {
     return [ageOfPatient, isChildVersion];
 }
 
-/* ********************************************* */
-/*                                               */
-/*   Set the value and the upper end of the      */
-/*     date range to today's date minus 5 years. */
-/*                                               */
-/*    Hervé CACI: July 24th, 2021                */
-/*                                               */
-/* ********************************************* */
+/* ******************************************** */
+/*                                              */
+/*   Set the value and the upper end of the     */
+/*   date range to today's date minus 5 years.  */
+/*                                              */
+/*          Hervé CACI: July 24th, 2021         */
+/*                                              */
+/* ******************************************** */
 
 function setTodayAndMaxDate() {
     let today = new Date();
@@ -128,7 +175,7 @@ function setTodayAndMaxDate() {
 /*    Enable/Disable the GO button      */
 /*    depending of fields empty or not  */
 /*                                      */
-/*    Hervé CACI: July 27th, 2021       */
+/*       Hervé CACI: July 27th, 2021    */
 /*                                      */
 /* ************************************ */
 
@@ -152,71 +199,10 @@ function infoModified() {
     document.getElementById("ageAndVersion").innerText = theAge;
 }
 
-// Test de la sauvegarde des data
-
-function saveFile() { // saveFile = () => {
-    const examinateur = document.getElementById('examinateur');
-    const site = document.getElementById('site');
-    const lastName = document.getElementById('lName');
-    const firstName = document.getElementById('fName');
-    const birth = document.getElementById('birth');
-    const age = document.getElementById('Age');
-    
-    let sexeRadio = document.getElementsByName('gender');
-    let sexe="Non renseigne";
-    if (sexeRadio[0].checked) { sexe="Masculin"; }
-        else if (sexeRadio[1].checked) { sexe="Feminin"; }
-
-    let todayDate=new Date();
-
-    let data = 
-        '\r Examinateur: ' + examinateur.value + ' \r\n ' +
-        'Site: ' + site.value + ' \r\n ' +
-        'lName: ' + lastName.value + ' \r\n ' +
-        'fName: ' + firstName.value + ' \r\n ' +
-        'sexe: ' + sexe + ' \r\n ' +
-        'Date de passation: ' + todayDate.toLocaleString('fr-FR') + ' \r\n ' + //.toLocaleDateString()
-        'Date de naissance: ' + dobPickerId.value.toLocaleString('fr-FR') + ' \r\n ' +
-        'age: ' + age.value + ' \r\n ' +
-        'Child version: ' + isChildVersion + ' \r\n'
-
-    // File name reflects patient characteristics:
-    //    LastName (3 chars) + firstName (2 chars) + passationDate (8 chars)
-    //    + passationTime (4 chars) + version (A=Adult / c=child) + sex (M/F)
-    // 
-    let todayMonth=(todayDate.getMonth()+1).toString();
-    if (todayDate.getMonth()<9) { todayMonth='0'+todayMonth; }
-    let fileName = lastName.value.toUpperCase() + firstName.value.toUpperCase() /*
-    */ + '_' + todayDate.getFullYear() + todayMonth + todayDate.getDate() /*
-    */ + '_' + todayDate.getHours() + todayDate.getMinutes()
-    if (isChildVersion) { fileName = fileName + "_c"; }
-        else { fileName = fileName + "_A"; }
-    if (sexe=="Masculin") { fileName = fileName + "M"; }
-        else { fileName = fileName + "F"; }
-    fileName = fileName + '.txt'
-    
-    const textToBLOB = new Blob([data], {type : 'text/plain' });
-    let newLink = document.createElement("a");
-    newLink.download = fileName;
-
-    if (window.webkitURL != null) {
-        newLink.href = window.webkitURL.createObjectURL(textToBLOB);
-    }
-    else {
-        newLink.href = window.URL.createObjectURL(textToBLOB);
-        newLink.style.display = "none";
-        document.body.appendChild(newLink);
-    }
-
-    newLink.click(); 
-}
-
 function getExaminateur() {
     examinateur2 = JSON.parse(examinateur2);
-    console.log(examinateur2);
     var x = document.getElementById("examinateur");
     examinateur2.forEach(function(entry) {
-        console.log(entry);
         var option = document.createElement("option");
         option.text = entry.nom + " " + entry.prenom;
         x.add(option);
@@ -225,10 +211,8 @@ function getExaminateur() {
 
 function getSite() {
     site2 = JSON.parse(site2);
-    console.log(site2);
     var x = document.getElementById("site");
     site2.forEach(function(entry) {
-        console.log(entry);
         var option = document.createElement("option");
         option.text = entry.nom;
         x.add(option);
@@ -288,4 +272,30 @@ function saveTable() {
             console.log(value + " " + i + j);
         }
     }
+}
+
+function writePDF() {
+    window.jsPDF = window.jspdf.jsPDF;
+    var pdf = new jsPDF('p', 'mm', 'a4'); // orientation: paysage, unit: millimeter, size: 210x297mm)
+    margins = {
+        top: 80,
+        bottom: 60,
+        left: 40,
+        width: 522
+    };
+    pdf.text(20,20, 'Hello World!');
+    pdf.text(100,20,'Profil thyroïdien anormal chez les enfants et adolescents avec un<br/>Trouble du Déficit de l\’Attention avec Hyperactivité (TDAH)<br/>ThyrADHD');
+    pdf.save('ANT_test.pdf');
+    /*
+    var source='<div><p<Strong>Profil thyroïdien anormal chez les enfants et adolescents avec un<br/>Trouble du Déficit de l\’Attention avec Hyperactivité (TDAH)<br/>ThyrADHD</strong></p></div>';
+    
+    pdf.html(
+        source,                        // HTML string or DOM elem ref.
+        {                              // <optional> Collection of settings
+        callback: function(pdf) {
+            pdf.save('ANT_test.pdf')   // Save to file when the PDF is ready
+            }
+        }
+    );
+    */
 }

@@ -4,12 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ANT</title>
+    <title>ANT & eye-tracking</title>
     <script src="assets/js/scripts.js"></script>
     <script type="text/javascript" src="assets/js/examinateur.json"></script>
     <script type="text/javascript" src="assets/js/site.json"></script>
-    <script src="https://kit.fontawesome.com/43298923f3.js"></script> 
-    
+    <script src="https://kit.fontawesome.com/43298923f3.js"></script>
+    //
+    // JSPDF
+    <script type="text/javascript" src="fromGit/js/jspdf.umd.min.js"></script>
+
     <!-- Polices -->
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
@@ -22,10 +25,8 @@
         <div class="container"> 
             <h1>ATTENTION NETWORK TASK</h1>
             <h2>(Jin FAN et al 2002)</h2>
-            <h3>Thibault CACI - 2021</h3>
+            <h3>Thibault CACI & Hervé CACI - 2021</h3>
         </div>
-        <br/>
-        <p>Date du test :<script>document.write(new Date().toLocaleDateString());</script></p>
     </section>
 
     <!-- Section 2 = Section de choix examinateur + patient -->
@@ -64,9 +65,9 @@
                             <input type="radio" name="gender" value="Femme" onInput="infoModified()">Feminin
                         </form>
                         <label for="birth">Date de naissance :</label>
-                        <input type="date" id="dobPickerId" name="dateOfBirth" min="1930-01-01" readonly onInput="infoModified()" Onblur="infoModified()">
+                        <input type="date" id="dobPickerId" name="dateOfBirth" min="1930-01-01" readonly format="dd-mm-yyyy" onInput="infoModified()" Onblur="infoModified()">
                         <!--<input type="text" name="ageAndVersion" id= "ageAndVersion" size=25 disabled>-->
-                        <small name="ageAndVersion" id= "ageAndVersion" size=25>Something
+                        <small name="ageAndVersion" id= "ageAndVersion" size=25>5 ans 0 mois et 0 jour
                     </p>
                 </form>
             </div>
@@ -74,10 +75,6 @@
     </section>
 
     <section id="section3">
-        <div>
-            <input type="button" id="buttonSave" value="Save data to file" onclick="saveFile()" />
-        </div>
-        <br/><br/>
         <div>
             <input type="submit" id="buttonGO" value=" GO !! " disabled=true onclick=passData()>
         </div>

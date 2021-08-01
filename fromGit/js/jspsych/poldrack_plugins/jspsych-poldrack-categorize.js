@@ -5,15 +5,28 @@
  * documentation: docs.jspsych.org
  **/
 
+ /*
+      Note pour jouer un son...
 
-jsPsych.plugins['poldrack-categorize'] = (function() { // Ajout -stimulus ???
+ var trial = {
+	type: 'audio-keyboard-response',
+	stimulus: 'sound/tone.mp3',
+	choices: jsPsych.NO_KEYS,
+	trial_ends_after_audio: true
+};
+
+  var audio = new Audio('audio_file.mp3');
+  audio.play();
+*/
+
+jsPsych.plugins['poldrack-categorize'] = (function() {
 
   var plugin = {};
 
-  jsPsych.pluginAPI.registerPreload('animation', 'stimulus', 'image'); // Copié de "old"
+  jsPsych.pluginAPI.registerPreload('animation', 'stimulus', 'image'); // Copié de "old" - plugin_name, parameter, media_type
 
   plugin.info = {
-    name: 'poldrack-categorize',                       // Ajout -stimulus ???
+    name: 'poldrack-categorize',
     description: '',
     parameters: {
       stimulus: {
@@ -106,67 +119,39 @@ jsPsych.plugins['poldrack-categorize'] = (function() { // Ajout -stimulus ???
 
   plugin.trial = function(display_element, trial) {
 
-    // COPIE DE ANCIEN PLUGIN
+    // Default parameters if not property set on call
     //
-    // default parameters
     trial.text_answer = (typeof trial.text_answer === 'undefined') ? "" : trial.text_answer;
-    trial.correct_text = (typeof trial.correct_text === 'undefined') ? "<p class='feedback'>Correct</p>" : trial.correct_text;
-    trial.incorrect_text = (typeof trial.incorrect_text === 'undefined') ? "<p class='feedback'>Incorrect</p>" : trial.incorrect_text;
+    trial.correct_text = (typeof trial.correct_text === 'undefined') ? "<p class='feedback'>Correct (défault)</p>" : trial.correct_text;
+    trial.incorrect_text = (typeof trial.incorrect_text === 'undefined') ? "<p class='feedback'>Incorrect (défault)</p>" : trial.incorrect_text;
     trial.show_stim_with_feedback = (typeof trial.show_stim_with_feedback === 'undefined') ? true : trial.show_stim_with_feedback;
     trial.is_html = (typeof trial.is_html === 'undefined') ? false : trial.is_html;
     trial.force_correct_button_press = (typeof trial.force_correct_button_press === 'undefined') ? false : trial.force_correct_button_press;
     trial.prompt = (typeof trial.prompt === 'undefined') ? '' : trial.prompt;
     trial.show_feedback_on_timeout = (typeof trial.show_feedback_on_timeout === 'undefined') ? false : trial.show_feedback_on_timeout;
-    trial.timeout_message = trial.timeout_message || "<p>Please respond faster.</p>";
+    trial.timeout_message = trial.timeout_message || "<p>Répondez plus vite!</p>";
     
     // timing params
+    //
     trial.response_ends_trial = (typeof trial.response_ends_trial == 'undefined') ? false : trial.response_ends_trial;
     trial.timing_stim = trial.timing_stim || -1; // default is to show image until response
     trial.timing_response = trial.timing_response || -1; // default is no max response time
     trial.timing_feedback_duration = trial.timing_feedback_duration || 2000;
     trial.timing_post_trial = (typeof trial.timing_post_trial === 'undefined') ? 1000 : trial.timing_post_trial;
 
-    // this array holds handlers from setTimeout calls
-    // that need to be cleared if the trial ends early
-    // var setTimeoutHandlers = [];
-
-    // if (!trial.is_html) {
-    //   // add image to display
-    //   display_element.append($('<img>', {
-    //     "src": trial.stimulus,
-    //     //"class": 'jspsych-poldrack-categorize-stimulus',
-    //     "id": 'jspsych-poldrack-categorize-stimulus'
-    //   }));
-    // } else {
-    //   display_element.append($('<div>', {
-    //     id: 'jspsych-poldrack-categorize-stimulus',           // "id" remplacé par id
-    //     //"class": 'jspsych-poldrack-categorize-stimulus',
-    //     html: trial.stimulus                                  // "html" remplacé par html
-    //   }));
-    // }
-    //
-    // ERREUR?  childNodes[0] 0: div#jspsych-categorize-stimulus ==> dans children il y a
-    //          deux childNodes (ANT_up et centerbox)
-    //          Puis, display_element.append ajoute un childNode
-    //          1: text avec un champ data: "[object Object]"
-    // Je suppose que display_element.append n'a pas réussi à ajouter un noeud de type
-    // jspsych-poldrack-categorize-stimulus, et qu'il a ajouté un noeud par défaut de
-    // type text affichant "[object Object]"
-
-    // FIN DE COPIE
-
     // Affiche le stimulus
     //
     display_element.innerHTML = '<div id="jspsych-categorize-stimulus" class="jspsych-categorize-stimulus">'+trial.stimulus+'</div>';
 
     // hide image after time if the timing parameter is set
+    //
     if (trial.stimulus_duration !== null) {
       jsPsych.pluginAPI.setTimeout(function() {
         display_element.querySelector('#jspsych-poldrack-categorize-stimulus').style.visibility = 'hidden';
       }, trial.stimulus_duration);
     }
 
-    // if prompt is set, show prompt
+    // if prompt is set, show prompt  ('Any content here will be displayed below the stimulus.')
     if (trial.prompt !== null) {
       display_element.innerHTML += trial.prompt;
     }
@@ -174,6 +159,7 @@ jsPsych.plugins['poldrack-categorize'] = (function() { // Ajout -stimulus ???
     var trial_data = {};
 
     // create response function
+    //
     var after_response = function(info) {
 
       // DEBUT DE COPIE ANCIEN PLUGIN
@@ -186,10 +172,9 @@ jsPsych.plugins['poldrack-categorize'] = (function() { // Ajout -stimulus ???
       //
       // FIN DE COPIE
 
-      // kill any remaining setTimeout handlers
+      // Kill any remaining setTimeout handlers & clear keyboard listener
+      //
       jsPsych.pluginAPI.clearAllTimeouts();
-
-      // clear keyboard listener
       jsPsych.pluginAPI.cancelAllKeyboardResponses();
 
       var correct = false;
@@ -244,6 +229,7 @@ jsPsych.plugins['poldrack-categorize'] = (function() { // Ajout -stimulus ???
           setTimeout(function() {
             $('#jspsych-poldrack-categorize-stimulus').css('visibility', 'hidden');
           }, trial.timing_stim - info.rt);
+          
           setTimeout(function() {
             doFeedback(correct, timeout);
           }, trial.timing_response - info.rt);
@@ -262,7 +248,7 @@ jsPsych.plugins['poldrack-categorize'] = (function() { // Ajout -stimulus ???
     jsPsych.pluginAPI.getKeyboardResponse({
       callback_function: after_response,
       valid_responses: trial.choices,
-      rt_method: 'performance', // changé 'performance' en 'date'
+      rt_method: 'performance',             // changé 'performance' en 'date'
       persist: false,
       allow_held_key: false
     });
