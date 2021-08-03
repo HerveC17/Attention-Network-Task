@@ -16,14 +16,29 @@ var dataToSendToANT;
 /*                                      */
 /* ************************************ */
 //
-//   1. File storage to be modified later (PDF, etc.)
+//   1. File storage to be modified later
 // x 2. Same format for date and dob
-//   3. Code to be optimized
+// x 3. Output parameters to a PDF page 
+//   4. Code to be optimized
 
 function passData() {
 
-    writePDF();
-
+    // Get center where study is conducted & doctor's name
+    let centerOfStudy=document.getElementById('site').value.toString().toLowerCase();
+    centerOfStudy=centerOfStudy.slice(0,1).toUpperCase()+
+        centerOfStudy.slice(1,centerOfStudy.length).toLowerCase();
+    let doctorName=document.getElementById('examinateur').value.toString().toUpperCase();
+    
+    // Get patient's first and last names, date of birth & gender
+    //
+    let lastName = document.getElementById('lName').value.toUpperCase();
+    let firstName = document.getElementById('fName').value.slice(0,1).toUpperCase() +
+                    document.getElementById('fName').value.slice(1,2).toLowerCase();
+    let dateOfBirth=dobPickerId.value.toLocaleString('fr-FR'); // 2016-08-01
+    let dateOfBirthDay=dateOfBirth.substring(8,10);
+    let dateOfBirthMonth=dateOfBirth.substring(5,7);
+    let dateOfBirthYear=dateOfBirth.substring(0,4);
+    dateOfBirth = dateOfBirthDay + "-" + dateOfBirthMonth + "-"+ dateOfBirthYear;
     let sexeRadio = document.getElementsByName('gender');
     let sexe="Masculin";
     if (sexeRadio[1].checked) { sexe="Feminin"; }
@@ -41,27 +56,73 @@ function passData() {
     if (todayHour.length<2) { todayHour = "0"+todayHour; }
     let todayMin=todayDate.getMinutes().toString();
     if (todayMin.length<2) { todayMin = "0"+todayMin; }
-    let fileName = document.getElementById('lName').value.toString().toUpperCase() /*
-    */ + document.getElementById('fName').value.toString().toUpperCase() /*
+    let passationDate=todayDay + "-" + todayMonth + "-" + todayDate.getFullYear();
+    let passationTime=todayHour + ":" + todayMin;
+    let fileName = lastName + firstName /*
     */ + '_' + todayDate.getFullYear() + todayMonth + todayDay /*
-    */ + '_' + todayHour + todayMin
-    if (isChildVersion) { fileName = fileName + "_c"; }
-        else { fileName = fileName + "_A"; }
+    */ + '_' + passationTime;
+    let whatVersion="Child";
+    if (isChildVersion) {
+        fileName = fileName + "_c";
+        }
+        else {
+            fileName = fileName + "_A"; 
+            whatVersion = "Classical";
+        }
     if (sexe=="Masculin") { fileName = fileName + "M"; }
         else { fileName = fileName + "F"; }
     fileName = fileName + '.txt'
-
-    var dateOfBirth=dobPickerId.value.toLocaleString('fr-FR'); // 2016-08-01
-    let dateOfBirthDay=dateOfBirth.substring(8,10);
-    let dateOfBirthMonth=dateOfBirth.substring(5,7);
-    let dateOfBirthYear=dateOfBirth.substring(0,4);
+   
+    window.jsPDF = window.jspdf.jsPDF;
+    var theReportPDF = new jsPDF('p', 'pt', 'a4'); // orientation: paysage, unit: point, size: 210x297mm)
+    //
+    var listOfFonts= theReportPDF.getFontList();
+    console.log(listOfFonts);
+    //
+    theReportPDF.setFont("Times", "Bold");
+    theReportPDF.setFontSize('16');
+    theReportPDF.text(297,30, "ANTeye", "center");
+    theReportPDF.setFontSize('10');
+    theReportPDF.text(297, 45, "Thibault CACI & Hervé CACI - 2021", "center");
+    //
+    theReportPDF.setFontSize('12');
+    let lines=["Nom:", "Prénom:", "Sexe:", "Date de naissance:",
+                "Date de passation:", "Heure de passation:", "Age:",
+                "Centre:", "Examinateur:",
+                "Nom du fichier:"];
+    for (let i=0; i<10; i++) {
+        theReportPDF.text(20, 80+15*i, lines[i]);
+    }
+    //
+    theReportPDF.setFont("Times", "Normal");
+    theReportPDF.text(50,80,lastName);
+    theReportPDF.text(70,95,firstName);
+    theReportPDF.text(50,110,sexe);
+    theReportPDF.text(120,125,dateOfBirth);
+    theReportPDF.text(120,140,passationDate);
+    theReportPDF.text(125,155,passationTime);
+    theReportPDF.text(50,170,ageOfPatient);
+    theReportPDF.text(65,185,centerOfStudy);
+    theReportPDF.text(95,200,doctorName);
+    theReportPDF.text(105,215,fileName);
+    //
+    theReportPDF.setFont("Times", "Bold");
+    theReportPDF.text(20, 230, "Résultats du test Attention Network Test (" + whatVersion + " version)");
+    theReportPDF.text(20, 500, "Résultats de l'eye-tracking");
+    //
+    theReportPDF.setFont("Times", "Italic"); // (fontName, fontStyle)
+    theReportPDF.setLineHeightFactor(1.5);
+    theReportPDF.setFontSize(10);
+    theReportPDF.text(20,795,'Test proposé dans le cadre de l\'étude: "ThyrADHD - Profil thyroïdien anormal chez les enfants et adolescents avec un Trouble du\nDéficit de l\’Attention avec Hyperactivité (TDAH)".\nInvestigateur Principal: Dr Hervé CACI - 2021');
+    //
+    theReportPDF.output('dataurlnewwindow');
 
     // Populate storage and go to the next page
     //
-    localStorage.setItem('examinateur', document.getElementById('examinateur').value);
-    localStorage.setItem('site', document.getElementById('site').value);
-    localStorage.setItem('lastName',document.getElementById('lName').value);
-    localStorage.setItem('firstName',document.getElementById('fName').value);
+    localStorage.setItem('examinateur', doctorName);
+    localStorage.setItem('site', centerOfStudy);
+    localStorage.setItem('lastName', lastName);
+    localStorage.setItem('firstName', firstName);
     localStorage.setItem('gender', sexe);
     localStorage.setItem('dob', ageOfPatient);
     localStorage.setItem('version', isChildVersion);
@@ -272,30 +333,4 @@ function saveTable() {
             console.log(value + " " + i + j);
         }
     }
-}
-
-function writePDF() {
-    window.jsPDF = window.jspdf.jsPDF;
-    var pdf = new jsPDF('p', 'mm', 'a4'); // orientation: paysage, unit: millimeter, size: 210x297mm)
-    margins = {
-        top: 80,
-        bottom: 60,
-        left: 40,
-        width: 522
-    };
-    pdf.text(20,20, 'Hello World!');
-    pdf.text(100,20,'Profil thyroïdien anormal chez les enfants et adolescents avec un<br/>Trouble du Déficit de l\’Attention avec Hyperactivité (TDAH)<br/>ThyrADHD');
-    pdf.save('ANT_test.pdf');
-    /*
-    var source='<div><p<Strong>Profil thyroïdien anormal chez les enfants et adolescents avec un<br/>Trouble du Déficit de l\’Attention avec Hyperactivité (TDAH)<br/>ThyrADHD</strong></p></div>';
-    
-    pdf.html(
-        source,                        // HTML string or DOM elem ref.
-        {                              // <optional> Collection of settings
-        callback: function(pdf) {
-            pdf.save('ANT_test.pdf')   // Save to file when the PDF is ready
-            }
-        }
-    );
-    */
 }

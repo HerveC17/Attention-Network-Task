@@ -1,1 +1,1 @@
-site2='[{"nom":"Lenval", "pays":"France"}, {"nom":"Antibes", "pays":"France"}, {"nom":"Grasse", "pays":"France"}, {"nom":"Monaco", "pays":"France"}]'
+site2 = '[ {"nom":"lenval", "pays":"France"}, {"nom":"antibes", "pays":"France"}, {"nom":"grasse", "pays":"France"},{"nom":"monaco", "pays":"Monaco"} ]'
