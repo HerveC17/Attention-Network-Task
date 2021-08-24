@@ -181,7 +181,7 @@ var getInstructFeedback = function() {
 var run_attention_checks = false
 var attention_check_thresh = 0.65
 var sumInstructTime = 0 //ms
-var instructTimeThresh = 1 ///in seconds
+var instructTimeThresh = 1 /// 1000 ms = 1 second / instruction page
 var credit_var = true
 
 // task specific variables
@@ -397,9 +397,9 @@ if (isChildVersion=="true") {
 		type: 'poldrack-instructions',
 		pages: [	/* Enlevé <p class=block-text> le 30/07/2021 par HC */
 			'<div class=centerbox>Le jeu consiste à nourrir un petit poisson en appuyant sur la touche qui correspond au côté vers lequel il est tourné.<br/><br/>Si tu vois que le poisson regarde à droite, il faut que tu appuies le plus vite possible sur la flèche droite &rarr;.<br/><br/><img class=ANT_imginstructions src=' + images[3] + '><br/><br/>Si tu vois qu’il regarde à gauche, il faut que tu appuies le plus vite possible sur la flèche gauche &larr;.<br/><br/><img class=ANT_img src=' + images[4] + '></div>',
-			'<div class=centerbox>Quelquefois le petit poisson est tout seul mais d\’autres fois il nage entouré de copains poissons.<br/><br/>Tu dois toujours faire attention au côté vers lequel regarde le poisson du <strong>milieu</strong> et ne jamais t\’occuper du côté vers lequel regardent les copains poissons.<br/><br/>Tu dois appuyer sur la flèche droite &rarr; si tu vois ceci<br/><br/><img class=ANT_img src='+ images[3] +'><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[3] + '><br/><br/>Tu dois <strong>aussi</strong> appuyer sur la flèche droite &rarr; vois cela!<br/><br/><img class=ANT_img src='+ images[4] +'><img class=ANT_img src=' + images[4] + '><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[4] + '><img class=ANT_img src=' + images[4] + '></div>',
+			'<div class=centerbox>Quelquefois le petit poisson est tout seul mais d\’autres fois il nage entouré de copains poissons.<br/><br/>Tu dois toujours faire attention au côté vers lequel regarde le poisson du <strong>milieu</strong> et ne jamais t\’occuper du côté vers lequel regardent les copains poissons.<br/><br/>Tu dois appuyer sur la flèche droite &rarr; si tu vois ceci<br/><br/><img class=ANT_img src='+ images[3] +'><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[3] + '><br/><br/>Tu dois <strong>aussi</strong> appuyer sur la flèche droite &rarr; si tu vois cela!<br/><br/><img class=ANT_img src='+ images[4] +'><img class=ANT_img src=' + images[4] + '><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[4] + '><img class=ANT_img src=' + images[4] + '></div>',
 			'<div class=centerbox>Tu dois appuyer sur la flèche gauche &larr; si tu vois ceci<br/><br/><img class=ANT_img src=' + images[4] + '><img class=ANT_img src=' + images[4] + '><img class=ANT_img src=' + images[4]+'><img class=ANT_img src=' + images[4]+'><img class=ANT_img src=' + images[4] + '><br/><br/>Tu dois <strong>aussi</strong> appuyer sur la flèche gauche &larr; si tu vois cela!<br/><br/><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[3] + '><img class=ANT_img src=' + images[4]+'><img class=ANT_img src=' + images[3]+'><img class=ANT_img src=' + images[3] + '><br/><br/>Tu as bien compris ce qu\'il faut faire ?</div>',
-			'<div class=centerbox>Pendant toute la durée du jeu, tu devras bien fixer du regard la croix au milieu de l’écran et réagir le plus rapidement possible quand tu verras apparaître le poisson ou un groupe de poissons. Une étoile t\'indiquera l\'endroit (au dessus ou en dessous) où va apparaître le poisson ou un groupe de poissons, mais parfois il y aura une étoile sur la croix ou deux étoiles (au dessus et en dessous de la croix) et tu devras faire très attention.<br/><br/>Pendant toute la durée du jeu, la webcam de l’ordinateur enregistrera le point que tu regardes sur l’écran (la croix, un poisson ou autre chose). Cela nous permettra de mieux mesurer l\'attention que tu portes au jeu.<br/><br/>Avant de jouer, il faudra apprendre à la caméra à suivre ton regard. Cela prendra quelques secondes seulement.<br/><br/>Ensuite, tu pourras t\'entraîner avant de jouer tout seul pour de vrai et pouvoir marquer des points.<br/><br/>Clique pour régler la caméra.</div>'
+			'<div class=centerbox>Pendant toute la durée du jeu, tu devras bien fixer du regard la croix au milieu de l’écran et réagir le plus rapidement possible quand tu verras apparaître le poisson ou un groupe de poissons. Une étoile t\'indiquera l\'endroit (au dessus ou en dessous) où va apparaître le poisson ou un groupe de poissons, mais parfois il y aura une étoile sur la croix ou deux étoiles (au dessus et en dessous de la croix) et tu devras faire très attention.<br/><br/>Pendant toute la durée du jeu, la webcam de l’ordinateur enregistrera le point que tu regardes sur l’écran (la croix, un poisson ou autre chose). Cela nous permettra de mieux mesurer l\'attention que tu portes au jeu.<br/><br/>Avant de jouer, il faudra apprendre à la caméra à suivre ton regard. Cela prendra quelques secondes seulement.<br/><br/>Ensuite, tu pourras t\'entraîner avant de jouer tout seul pour de vrai et pouvoir marquer des points.<br/><br/>Commençons par autoriser le programme à utiliser la webcam.</div>'
 		],
 		allow_keys: false,
 		data: {
@@ -420,7 +420,7 @@ else {
 			'<div class = centerbox><class = block-text>Il faut appuyer sur la flèche droite (&larr;) si vous voyez l’une de ces trois configurations<img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[1] + '><br/><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[0] + '><br/><img class=ANT_img src=' + images[2] + '><img class=ANT_img src=' + images[2] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[2] + '><img class=ANT_img src=' + images[2] + '></div>',
 			'<div class = centerbox><class = block-text>Il faut appuyer sur la flèche droite (&rarr;) si vous voyez l’une de ces trois configurations<img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[0] + '><br/><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[1] + '><img class=ANT_img src=' + images[1] + '><br/><img class=ANT_img src=' + images[2] + '><img class=ANT_img src=' + images[2] + '><img class=ANT_img src=' + images[0] + '><img class=ANT_img src=' + images[2] + '><img class=ANT_img src=' + images[2] + '></div>',
 			'<div class = centerbox><class = block-text>Tout au long du test, vous devrez fixer une croix au centre de l’écran.<br/><br/>Parfois, une étoile (*) apparaîtra juste avant les flèches soit au même endroit (au dessus ou en dessous de la croix), soit sur la croix elle-même, soit deux étoiles apparaîtront à la fois au dessus et en dessous de la croix.<br/><br/>Attention! il se peut qu\'aucune étoile n\'apparaissent mais, dans tous les cas, vous devrez appuyer sur la bonne touche le plus vite possible <strong>après</strong> que les flèches soient affichées.<br/><br/>Avant de commencer le test, vous suivrez une séance d\’entraînement. A chaque fois, le mot « Correct » ou « Incorrect » vous indiquera si vous avez bien respecté la consigne ou pas. Ensuite, pendant le test, aucune information ne vous sera donnée.</div>',
-			'<div class = centerbox><class = block-text>Pendant toute la durée du test, la webcam de l\’ordinateur enregistrera le point que vous regardez sur l\’écran (la croix, une flèche ou autre chose). Cela nous permettra de mieux mesurer votre attention pendant la durée du test.<br/><br/>Avant la séance d\’entraînement au test proprement dit, il faudra apprendre à la caméra à suivre votre regard. Cela ne prendra que quelques secondes.<br/><br/>Cliquez pour paramétrer la webcam.</div>'
+			'<div class = centerbox><class = block-text>Pendant toute la durée du test, la webcam de l\’ordinateur enregistrera le point que vous regardez sur l\’écran (la croix, une flèche ou autre chose). Cela nous permettra de mieux mesurer votre attention pendant la durée du test.<br/><br/>Avant la séance d\’entraînement au test proprement dit, il faudra apprendre à la caméra à suivre votre regard. Cela ne prendra que quelques secondes.<br/><br/>Commençons par autoriser le programme à utiliser la webcam.</div>'
 		],
 		allow_keys: false,
 		data: {
@@ -431,22 +431,24 @@ else {
 	};
 }
 
+// All instruction trials SHOULD be of 'poldrack-instructions' type to ensure
+// the instructions are read at a peaceful speed.
+//
 var instruction_node = {
-	timeline: [feedback_instruct_block, instructions_block],
+	timeline: [instructions_block], //[feedback_instruct_block, instructions_block],
 	/* This function defines stopping criteria */
 	loop_function: function(data) {
 		for (i = 0; i < data.length; i++) {
 			if ((data[i].trial_type == 'poldrack-instructions') && (data[i].rt != -1)) {
-				rt = data[i].rt
-				sumInstructTime = sumInstructTime + rt
+				sumInstructTime = sumInstructTime + data[i].rt
 			}
 		}
-		// if (sumInstructTime <= instructTimeThresh * 10) { // 1000
+		// if (sumInstructTime <= instructTimeThresh * 1000) {
 		// 	feedback_instruct_text =
 		// 		'Vous avez lu les consignes trop rapidement. Veuillez prendre votre temps et assurez-vous de bien comprendre les consignes. Appuyez sur la touche <strong>enter</strong> pour continuer.'
 		// 	return true
 		// } else if (sumInstructTime > instructTimeThresh * 1000) {
-			feedback_instruct_text = 'Vous en avez terminé avec les consignes. Appuyez sur la touche <strong>enter</strong> pour continuer.'
+			feedback_instruct_text = 'Vous en avez terminé avec les consignes. Appuyez sur la touche <strong>Entrée</strong> pour continuer.'
 			return false
 		//}
 	}
@@ -538,6 +540,98 @@ var double_cue = {
 	}
 }
 
+/* **************************** */
+/*                              */
+/*          WebGazer...         */
+/*                              */
+/* **************************** */
+//
+// camera_instructions est compris dans instructions_node
+
+var init_camera = {
+	type: 'webgazer-init-camera'
+}
+
+if (isChildVersion=="true") {
+	var calibration_instructions = {
+		type: 'poldrack-instructions',
+		pages: [
+			'<div class=centerbox>Super! L\'ordinateur va maintenant s\'entraîner à trouver le point que tu fixes sur l\'écran.<br>Pour cela, tu dois maintenir ta tête immobile et fixer du regard les points qui apparaissent et ensuite seulement tu cliqueras sur le bouton de la souris.</div>'
+		],
+		allow_keys: false,
+		data: {
+			trial_id: 'instruction'
+		},
+		show_clickable_nav: true,
+		timing_post_trial: 1000
+	}
+}
+else {
+	var calibration_instructions = {
+    type: 'poldrack-instructions',
+	pages: [
+		'<div class=centerbox>Super! L\'ordinateur va calibrer la caméra pour calculer le point sur l\'écran que vous fixez.<br>Pour cela, nous devrez cliquer sur plusieurs points.<br>Maintenez votre tête immobile, regardez le point et cliquer en même temps.</div>'
+	],
+	allow_keys: false,
+	data: {
+		trial_id: 'instruction'
+	},
+	show_clickable_nav: true,
+	timing_post_trial: 1000
+	}
+}
+
+var calibration = {
+    type: 'webgazer-calibrate',
+    calibration_points: [[50,50], [25,25], [25,75], [75,25], [75,75]],
+    //calibration_points: [[10,10],[10,30],[10,50],[10,70],[10,90],[30,10],[30,30],[30,50],[30,70],[30,90],[50,10],[50,30],[50,50],[50,70],[50,90],[70,10],[70,30],[70,50],[70,70],[70,90],[90,10],[90,30],[90,50],[90,70],[90,90]],
+    // calibration_points: [
+    //   [10,10],[10,50],[10,90],
+    //   [30,10],[30,50],[30,90],
+    //   [40,10],[40,30],[40,40],[40,45],[40,50],[40,55],[40,60],[40,70],[40,90],
+    //   [50,10],[50,30],[50,40],[50,45],[50,50],[50,55],[50,60],[50,70],[50,90],
+    //   [60,10],[60,30],[60,40],[60,45],[60,50],[60,55],[60,60],[60,70],[60,90],
+    //   [70,10],[70,50],[70,90],
+    //   [90,10],[90,50],[90,90]],
+    repetitions_per_point: 3,
+    randomize_calibration_order: true,
+}
+
+if (isChildVersion=="true") {
+	var validation_instructions = {
+		type: 'poldrack-instructions',
+		pages: [
+		'<div class=centerbox>Voyons si l\'ordinateur a bien appris.<br>Gardes ta tête bien immobile, bouge seulement les yeux et fixe le point qui apparaît. Il n\'y a pas besoin de cliquer cette fois mais juste à regarder fixement le point.</div>'
+		],
+		allow_keys: false,
+		data: {
+			trial_id: 'instruction'
+		},
+		show_clickable_nav: true,
+		timing_post_trial: 1000
+	}
+}
+else {
+	var validation_instructions = {
+		type: 'poldrack-instructions',
+		pages: [
+		'<div class=centerbox>Voyons à quel point l\'eye-tracking est précis.<br>Maintenez votre tête immobile et ne bougez que les yeux pour regarder le point qui apparaît.Vous n\'avez pas à cliquer mais juste à regarder fixement le point.</div>'
+		],
+		allow_keys: false,
+		data: {
+			trial_id: 'instruction'
+		},
+		show_clickable_nav: true,
+		timing_post_trial: 1000
+	}
+}
+
+var validation = {
+    type: 'webgazer-validate',
+    validation_points: [[25,25], [25,75], [75,25], [75,75]],
+    show_validation_data: true
+}
+
 /* set up ANT experiment */
 var attention_network_task_experiment = [];
 
@@ -553,7 +647,18 @@ var exitFromFullScreen = {
 // Create the instruction node in the timeliine
 //
 attention_network_task_experiment.push(goToFullScreen);
-attention_network_task_experiment.push(instruction_node);
+attention_network_task_experiment.push(instruction_node); // Included camera_instructions
+
+// Initialize and calibrate Webgazer with instructions
+//
+//attention_network_task_experiment.push(camera_instructions);
+attention_network_task_experiment.push(init_camera);
+attention_network_task_experiment.push(calibration_instructions);
+attention_network_task_experiment.push(calibration);
+attention_network_task_experiment.push(validation_instructions);
+attention_network_task_experiment.push(validation);
+
+attention_network_task_experiment.push(first_fixation);
 
 /* set up ANT practice */
 /*

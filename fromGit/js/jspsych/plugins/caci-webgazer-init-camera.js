@@ -14,10 +14,10 @@
       instructions: {
         type: jsPsych.plugins.parameterType.HTML_STRING,
         default: `
-            <p>Position your head so that the webcam has a good view of your eyes.</p>
-            <p>Center your face in the box and look directly towards the camera.</p>
-            <p>It is important that you try and keep your head reasonably still throughout the experiment, so please take a moment to adjust your setup to be comfortable.</p>
-            <p>When your face is centered in the box and the box is green, you can click to continue.</p>`
+            <p>Positionnez votre tête pour que la webcam puisse bien percevoir vos yeux.</p>
+            <p>Centrez votre visage dans la boîte et regardez la caméra en face.</p>
+            <p>Il est important que vous essayez de maintenir votre tête raisonnablement immobile pendant le test, donc prenez un moment pour vous asseoir confortablement.</p>
+            <p>Lorsque votre visage est bien centré et que la boîte devient verte, vous pourrez cliquer pour continuer.</p>`
       },
       button_text: {
         type: jsPsych.plugins.parameterType.STRING,
